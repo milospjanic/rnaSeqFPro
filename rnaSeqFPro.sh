@@ -5,19 +5,19 @@
 ls -1 *fastq.gz > commands.1
 sed -i 's/^/fastqc /g' commands.1
 
-#source commands.1
+source commands.1
 
-#mapping with bwa mem - requires bwa mem installed and copied to PATH
+#mapping with STAR - requires STAR installed and copied to PATH
 
 
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    mkdir "${files[i]}.${files[i+1]}.STAR"    
+    mkdir "${files[≈i]}.${files[i+1]}.STAR"    
 done 
 
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-  cat >> commands.4.${files[i]}.${files[i+1]}.tmp <<EOL
+  cat >> commands.2.${files[i]}.${files[i+1]}.tmp <<EOL
 #!/bin/bash
  GenomeDir=/home/reference_genomes/
  GenomeFasta=/home/reference_genomes/hg19.fa
@@ -53,12 +53,17 @@ EOL
 
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    sed -i "8i\\\tcd ${files[i]}.${files[i+1]}.STAR" commands.4.${files[i]}.${files[i+1]}.tmp
+    sed -i "8i\\\tcd ${files[i]}.${files[i+1]}.STAR" commands.2.${files[i]}.${files[i+1]}.tmp
 done
 
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    sed -i "2i\ Reads=\"${files[i]} ${files[i+1]} --readFilesCommand zcat\"" commands.4.${files[i]}.${files[i+1]}.tmp
+    sed -i "2i\ Reads=\"${files[i]} ${files[i+1]} --readFilesCommand zcat\"" commands.2.${files[i]}.${files[i+1]}.tmp
 done
+
+for (( i=0; i<${#files[@]} ; i+=2 )) ; do
+    source commands.2.${files[i]}.${files[i+1]}.tmp
+done
+
 
 
 
