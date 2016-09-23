@@ -18,7 +18,7 @@ cp ./FastQC/fastqc /usr/local/bin
 Instalation (Linux):
 
 <pre>
-# Get latest STAR source from releases
+# Get the latest STAR source
 wget https://github.com/alexdobin/STAR/archive/2.5.2b.tar.gz
 tar -xzf 2.5.2b.tar.gz
 cd STAR-2.5.2b
@@ -26,9 +26,6 @@ cd STAR-2.5.2b
 # Build STAR
 make STAR
 
-# To include STAR-Fusion
-git submodule update --init --recursive
-
-# If you have a TeX environment, you may like to build the documentation
+# If you have a TeX environment, build the documentation
 make manual
 </pre>
