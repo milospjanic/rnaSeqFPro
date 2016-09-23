@@ -18,10 +18,11 @@ done
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
   cat >> commands.4.${files[i]}.${files[i+1]}.tmp <<EOL
-    GenomeDir=/home/reference_genomes/
-    GenomeFasta=/home/reference_genomes/hg19.fa
-    CommonPars="--runThreadN 64 --outSAMattributes All --genomeLoad NoSharedMemory"
-    echo Proccessing $Reads
+#!/bin/bash
+ GenomeDir=/home/reference_genomes/
+ GenomeFasta=/home/reference_genomes/hg19.fa
+ CommonPars="--runThreadN 64 --outSAMattributes All --genomeLoad NoSharedMemory"
+    echo Proccessing ${files[i]} ${files[i+1]}
      
     # run 1st pass
         mkdir Pass1
@@ -56,7 +57,7 @@ for (( i=0; i<${#files[@]} ; i+=2 )) ; do
 done
 
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    sed -i "1i\\\tReads=${files[i]} ${files[i+1]} --readFilesCommand zcat" commands.4.${files[i]}.${files[i+1]}.tmp
+    sed -i "2i\ Reads=\"${files[i]} ${files[i+1]} --readFilesCommand zcat\"" commands.4.${files[i]}.${files[i+1]}.tmp
 done
 
 
