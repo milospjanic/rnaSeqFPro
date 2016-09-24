@@ -1,5 +1,6 @@
 # rnaSeqFPro
 
+rnaSeqFPro is a script that will do full proccessing of RNA-Seq data starting from
 #Dependencies
 
 **FastQC**
@@ -32,3 +33,18 @@ make manual
 chmod 755 STAR
 cp STAR /usr/local/bin
 </pre>
+
+**Reference genome**
+
+Download the reference genome, in this example it is human hg19:
+
+<pre>
+wget --timestamping 
+        'ftp://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.2bit ' 
+        -O hg19.2bit 
+wget http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/twoBitToFa
+chmod 755 twoBitToFa
+./twoBitToFa hg19.2bit hg19.fa
+</pre>
+
+        
