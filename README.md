@@ -28,4 +28,7 @@ make STAR
 
 # If you have a TeX environment, build the documentation
 make manual
+
+chmod 755 STAR
+cp STAR /usr/local/bin
 </pre>
