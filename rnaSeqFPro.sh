@@ -12,7 +12,7 @@ source commands.1
 
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    mkdir "${files[≈i]}.${files[i+1]}.STAR"    
+    mkdir "${files[i]}.${files[i+1]}.STAR"    
 done 
 
 files=(*fastq.gz)
