@@ -12,7 +12,7 @@ mkdir work.folder
 
 Instalation (Linux):
 
-<preer
+<pre>
 cd work.folder
 wget http://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.5.zip
 unzip fastqc_v0.11.5.zip
