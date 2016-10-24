@@ -1,6 +1,6 @@
 # rnaSeqFPro
 
-rnaSeqFPro is a script that will do full processing of paired RNA-Seq data starting from fastq.gz files placed in the same folder. Script will sort files are process paired .fastq.gz files. rnaSeqFPro will perform Fastqc quality control, it will map to the reference genome, 
+rnaSeqFPro is a script that will do full processing of paired RNA-Seq data starting from fastq.gz files placed in the same folder. Script will sort files and process paired .fastq.gz files. rnaSeqFPro will perform Fastqc quality control, it will map **paired fastq files** to the reference genome hg19, 
 
 #Dependencies
 
@@ -40,6 +40,8 @@ cp STAR /usr/local/bin
 Download the reference genome, in this example it is human hg19:
 
 <pre>
+mkdir ~/reference_genomes
+cd ~/reference_genomes
 wget --timestamping 
         'ftp://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.2bit ' 
         -O hg19.2bit 
@@ -52,6 +54,7 @@ chmod 755 twoBitToFa
 
 Use STAR to index the reference genome, use number of core on your machine, e.g. 64.
 <pre>
+cd ~/reference_genomes
 STAR  --runMode genomeGenerate --runThreadN 64 --genomeDir ./ --genomeFastaFiles hg19.fa
 </pre>
 
