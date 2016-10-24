@@ -1,6 +1,6 @@
 # rnaSeqFPro
 
-rnaSeqFPro is a script that will do full processing of paired RNA-Seq data starting from fastq.gz files placed in the same folder. Script will sort files and process paired .fastq.gz files. rnaSeqFPro will perform Fastqc quality control, it will map **paired fastq files** to the reference genome hg19, 
+rnaSeqFPro is a script that will do full processing of paired RNA-Seq data starting from fastq.gz files placed in the same folder. Script will sort files and process paired .fastq.gz files. rnaSeqFPro will perform Fastqc quality control, it will map **paired fastq files** to the reference genome hg19 using STAR's second pass mapping.
 
 #Dependencies
 
