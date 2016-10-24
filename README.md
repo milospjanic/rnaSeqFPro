@@ -17,7 +17,7 @@ cd work.folder
 wget http://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.5.zip
 unzip fastqc_v0.11.5.zip
 chmod 755 ./FastQC/fastqc
-cp ./FastQC/fastqc /usr/local/bin
+cp ./FastQC/fastqc /usr/local/bin #may not work run it locally via link:
 ln -s ./FastQC/fastqc .
 </pre>
 
