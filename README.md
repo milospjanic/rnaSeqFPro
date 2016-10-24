@@ -50,7 +50,7 @@ chmod 755 twoBitToFa
 
 **Indexing the reference genome**
 
-
+Use STAR to index the reference genome, use number of core on your machine, e.g. 64.
 <pre>
 STAR  --runMode genomeGenerate --runThreadN 64 --genomeDir ./ --genomeFastaFiles hg19.fa
 </pre>
