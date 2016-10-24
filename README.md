@@ -48,4 +48,10 @@ chmod 755 twoBitToFa
 ./twoBitToFa hg19.2bit hg19.fa
 </pre>
 
-        
+**Indexing the reference genome**
+
+
+<pre>
+STAR  --runMode genomeGenerate --runThreadN 64 --genomeDir ./ --genomeFastaFiles hg19.fa
+</pre>
+
