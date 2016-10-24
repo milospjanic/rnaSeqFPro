@@ -4,15 +4,21 @@ rnaSeqFPro is a script that will do full processing of paired RNA-Seq data start
 
 #Dependencies
 
+**Place fastqc.gz in a working folder**
+
+mkdir work.folder
+
 **FastQC**
 
 Instalation (Linux):
 
-<pre>
+<preer
+cd work.folder
 wget http://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.5.zip
 unzip fastqc_v0.11.5.zip
 chmod 755 ./FastQC/fastqc
 cp ./FastQC/fastqc /usr/local/bin 
+ln -s ./FastQC/fastqc .
 </pre>
 
 **STAR**
