@@ -1,11 +1,12 @@
 #!/bin/bash
 
-#fastqc quality control - requires fastqc installed and placed in PATH
+#fastqc quality control - requires fastqc installed and folder FastQC placed in working directoy 
+
 
 ls -1 *fastq.gz > commands.1
 sed -i 's/^/.\/FastQC\/fastqc /g' commands.1
 
-#source commands.1
+source commands.1
 
 #mapping with STAR - requires STAR installed and copied to PATH
 
@@ -22,12 +23,12 @@ for (( i=0; i<${#files[@]} ; i+=2 )) ; do
  GenomeDir="~/reference_genomes/"
  GenomeFasta="~/reference_genomes/hg19.fa"
  CommonPars="--runThreadN 64 --outSAMattributes All --genomeLoad NoSharedMemory"
-    echo Proccessing `pwd`/${files[i]} ${files[i+1]}
+    echo Proccessing `pwd`: ${files[i]} ${files[i+1]}
 
     # run 1st pass
         mkdir Pass1
         cd Pass1
-        STAR $CommonPars --genomeDir $GenomeDir --readFilesIn $Reads
+        STAR ${CommonPars} --genomeDir ${GenomeDir} --readFilesIn ${Reads}
         cd ..
     # make splice junctions database file out of SJ.out.tab, filter out non-canonical junctions
         mkdir GenomeForPass2
@@ -56,9 +57,9 @@ for (( i=0; i<${#files[@]} ; i+=2 )) ; do
     sed -i "2i\ Reads=\"`pwd`/${files[i]} `pwd`/${files[i+1]} --readFilesCommand zcat\"" commands.2.${files[i]}.${files[i+1]}.tmp
 done
 
-#for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    #source commands.2.${files[i]}.${files[i+1]}.tmp
-#done
+for (( i=0; i<${#files[@]} ; i+=2 )) ; do
+    source commands.2.${files[i]}.${files[i+1]}.tmp
+done
 
 
 
@@ -75,9 +76,10 @@ for (( i=0; i<${#files[@]} ; i+=2 )) ; do
     echo "${files[i]}.${files[i+1]}.sam" >> sam.tmp
 done
 
-awk 'FNR==NR{a[FNR]=$0;next}{ print $0,">",a[FNR]}' sam.tmp commands.2
+#awk 'FNR==NR{a[FNR]=$0;next}{ print $0,">",a[FNR]}' sam.tmp commands.2
 
 #rm sam.tmp
+#rm commands.2
 
 #source commands.2
 
