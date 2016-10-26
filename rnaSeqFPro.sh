@@ -84,3 +84,11 @@ done
 #source commands.2
 
 #counting with featureCounts
+
+featureCounts -T 10 \
+        -t exon \
+        -g transcript_id \
+         \
+        -a /sc/orga/projects/PBG/REFERENCES/hg19/ensembl/Homo_sapiens.GRCh37.70.processed.gtf \
+        -o /sc/orga/scratch/shahh06/GCF/outgoing/ProductionQC/QC_C193r.B343_KimJB_RiboZero_20141030.SE.RNASeqRibozero.RAPiD.Human/520A_BK/Processed/RAPiD.2_0_0/featureCounts/520A_BK.exon.transcriptID.txt \
+        /sc/orga/scratch/shahh06/GCF/outgoing/ProductionQC/QC_C193r.B343_KimJB_RiboZero_20141030.SE.RNASeqRibozero.RAPiD.Human/520A_BK/Processed/RAPiD.2_0_0/bams/520A_BK.accepted_hits.sort.coord.bam
