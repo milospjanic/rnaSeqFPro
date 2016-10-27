@@ -20,7 +20,7 @@ for (( i=0; i<${#files[@]} ; i+=2 )) ; do
   cat >> commands.2.${files[i]}.${files[i+1]}.tmp <<EOL
 #!/bin/bash
  GenomeDir="~/reference_genomes/"
- GenomeFasta="~/reference_genomes/mm10.fa"
+ GenomeFasta="~/reference_genomes/hg19.fa"
  CommonPars="--runThreadN 64 --outSAMattributes All --genomeLoad NoSharedMemory"
     echo Proccessing `pwd`: ${files[i]} ${files[i+1]}
      
@@ -82,8 +82,15 @@ rm merge.tmp
 
 #counting with featureCounts
 
-find . -type f -name '*.sam' -exec sh -c '
+find . -type f -wholename "*Pass2*sam" -exec sh -c '
     for f
         do echo $f
-        featureCounts -a genes.gtf -o counts.txt -T 12 -t exon -g gene_id $f
+        fileName=$(basename $f);
+        filePath=$(dirname $f);
+        lastDir=$(basename $filePath);
+        prevDir=$(basename $(dirname $filePath));
+        echo $prevDir
+        echo $lastDir
+        echo proccessing  $fileName from $(pwd)/$lastDir into $prevDir.counts.txt;
+        featureCounts -a gencode.v25lift37.annotation.gtf.gz -o $prevDir.counts.txt -T 12 -t exon -g gene_id $f
     done' sh {} +
