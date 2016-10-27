@@ -5,7 +5,7 @@
 ls -1 *fastq.gz > commands.1
 sed -i 's/^/.\/FastQC\/fastqc /g' commands.1
 
-#source commands.1
+source commands.1
 
 #mapping with STAR - requires STAR installed and copied to PATH
 
@@ -34,7 +34,7 @@ for (( i=0; i<${#files[@]} ; i+=2 )) ; do
         cd GenomeForPass2
         awk 'BEGIN {OFS="\t"; strChar[0]="."; strChar[1]="+"; strChar[2]="-";} {if(\$5>0){print \$1,\$2,\$3,strChar[\$4]}}' ../Pass1/SJ.out.tab > SJ.out.tab.Pass1.sjdb
     # generate genome with junctions from the 1st pass
-        STAR --genomeDir ${GenomeDir} --runMode genomeGenerate --genomeFastaFiles ${GenomeFasta} --sjdbFileChrStartEnd SJ.out.tab.Pass1.sjdb --sjdbOverhang 100 --runThreadN 64
+        STAR --genomeDir ./ --runMode genomeGenerate --genomeFastaFiles ${GenomeFasta} --sjdbFileChrStartEnd SJ.out.tab.Pass1.sjdb --sjdbOverhang 100 --runThreadN 64
         cd ..
     # run 2nd pass with the new genome
         mkdir Pass2
@@ -79,8 +79,6 @@ awk 'FNR==NR{a[FNR]=$0;next}{ print $0,">",a[FNR]}' sam.tmp commands.2 > merge.t
 rm sam.tmp
 rm commands.2
 rm merge.tmp
-
-source commands.2
 
 #counting with featureCounts
 
