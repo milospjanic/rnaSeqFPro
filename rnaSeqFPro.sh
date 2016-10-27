@@ -84,3 +84,8 @@ done
 
 #counting with featureCounts
 
+find . -type f -name '*.html' -exec sh -c '
+    for f
+    do echo $f
+    featureCounts $f
+    done' sh {} +
