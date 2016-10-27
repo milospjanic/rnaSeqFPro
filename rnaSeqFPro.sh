@@ -85,5 +85,5 @@ rm merge.tmp
 find . -type f -name '*.sam' -exec sh -c '
     for f
         do echo $f
-        featureCounts $f
+        featureCounts -a genes.gtf -o counts.txt -T 12 -t exon -g gene_id $f
     done' sh {} +
