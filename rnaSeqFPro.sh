@@ -1,7 +1,6 @@
 #!/bin/bash
 
-#fastqc quality control - requires fastqc installed and folder FastQC placed in working directoy 
-
+#fastqc quality control - requires fastqc installed and placed in PATH
 
 ls -1 *fastq.gz > commands.1
 sed -i 's/^/.\/FastQC\/fastqc /g' commands.1
@@ -33,7 +32,7 @@ for (( i=0; i<${#files[@]} ; i+=2 )) ; do
     # make splice junctions database file out of SJ.out.tab, filter out non-canonical junctions
         mkdir GenomeForPass2
         cd GenomeForPass2
-        awk 'BEGIN {OFS="\t"; strChar[0]="."; strChar[1]="+"; strChar[2]="-";} {if($5>0){print $1,$2,$3,strChar[$4]}}' ../Pass1/SJ.out.tab > SJ.out.tab.Pass1.sjdb
+        awk 'BEGIN {OFS="\t"; strChar[0]="."; strChar[1]="+"; strChar[2]="-";} {if(\$5>0){print \$1,\$2,\$3,strChar[\$4]}}' ../Pass1/SJ.out.tab > SJ.out.tab.Pass1.sjdb
     # generate genome with junctions from the 1st pass
         STAR --genomeDir ./ --runMode genomeGenerate --genomeFastaFiles $GenomeFasta --sjdbFileChrStartEnd SJ.out.tab.Pass1.sjdb --sjdbOverhang 100 --runThreadN 64
         cd ..
@@ -85,10 +84,3 @@ done
 
 #counting with featureCounts
 
-featureCounts -T 10 \
-        -t exon \
-        -g transcript_id \
-         \
-        -a /sc/orga/projects/PBG/REFERENCES/hg19/ensembl/Homo_sapiens.GRCh37.70.processed.gtf \
-        -o /sc/orga/scratch/shahh06/GCF/outgoing/ProductionQC/QC_C193r.B343_KimJB_RiboZero_20141030.SE.RNASeqRibozero.RAPiD.Human/520A_BK/Processed/RAPiD.2_0_0/featureCounts/520A_BK.exon.transcriptID.txt \
-        /sc/orga/scratch/shahh06/GCF/outgoing/ProductionQC/QC_C193r.B343_KimJB_RiboZero_20141030.SE.RNASeqRibozero.RAPiD.Human/520A_BK/Processed/RAPiD.2_0_0/bams/520A_BK.accepted_hits.sort.coord.bam
