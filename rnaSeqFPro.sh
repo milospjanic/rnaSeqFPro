@@ -5,25 +5,25 @@
 ls -1 *fastq.gz > commands.1
 sed -i 's/^/.\/FastQC\/fastqc /g' commands.1
 
-source commands.1
+#source commands.1
 
 #mapping with STAR - requires STAR installed and copied to PATH
 
 
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    mkdir "${files[i]}.${files[i+1]}.STAR"
-done
+    mkdir "${files[i]}.${files[i+1]}.STAR"    
+done 
 
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
   cat >> commands.2.${files[i]}.${files[i+1]}.tmp <<EOL
 #!/bin/bash
  GenomeDir="~/reference_genomes/"
- GenomeFasta="~/reference_genomes/hg19.fa"
+ GenomeFasta="~/reference_genomes/mm10.fa"
  CommonPars="--runThreadN 64 --outSAMattributes All --genomeLoad NoSharedMemory"
     echo Proccessing `pwd`: ${files[i]} ${files[i+1]}
-
+     
     # run 1st pass
         mkdir Pass1
         cd Pass1
@@ -34,13 +34,13 @@ for (( i=0; i<${#files[@]} ; i+=2 )) ; do
         cd GenomeForPass2
         awk 'BEGIN {OFS="\t"; strChar[0]="."; strChar[1]="+"; strChar[2]="-";} {if(\$5>0){print \$1,\$2,\$3,strChar[\$4]}}' ../Pass1/SJ.out.tab > SJ.out.tab.Pass1.sjdb
     # generate genome with junctions from the 1st pass
-        STAR --genomeDir ./ --runMode genomeGenerate --genomeFastaFiles $GenomeFasta --sjdbFileChrStartEnd SJ.out.tab.Pass1.sjdb --sjdbOverhang 100 --runThreadN 64
+        STAR --genomeDir ${GenomeDir} --runMode genomeGenerate --genomeFastaFiles ${GenomeFasta} --sjdbFileChrStartEnd SJ.out.tab.Pass1.sjdb --sjdbOverhang 100 --runThreadN 64
         cd ..
     # run 2nd pass with the new genome
         mkdir Pass2
         cd Pass2
-        STAR $CommonPars --genomeDir ../GenomeForPass2 --readFilesIn $Reads
-        echo FINISHED $Reads
+        STAR ${CommonPars} --genomeDir ../GenomeForPass2 --readFilesIn ${Reads}
+        echo FINISHED ${Reads}
         cd ..
         cd ..
         done
@@ -60,8 +60,7 @@ for (( i=0; i<${#files[@]} ; i+=2 )) ; do
     source commands.2.${files[i]}.${files[i+1]}.tmp
 done
 
-
-
+#subscrips
 
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
@@ -72,15 +71,16 @@ touch sam.tmp
 
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    echo "${files[i]}.${files[i+1]}.sam" >> sam.tmp
+    echo "${files[i]}.${files[i+1]}.sam" >> sam.tmp     
 done
 
-#awk 'FNR==NR{a[FNR]=$0;next}{ print $0,">",a[FNR]}' sam.tmp commands.2
+awk 'FNR==NR{a[FNR]=$0;next}{ print $0,">",a[FNR]}' sam.tmp commands.2 > merge.tmp
 
-#rm sam.tmp
-#rm commands.2
+rm sam.tmp
+rm commands.2
+rm merge.tmp
 
-#source commands.2
+source commands.2
 
 #counting with featureCounts
 
