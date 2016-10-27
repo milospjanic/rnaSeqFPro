@@ -92,5 +92,5 @@ find . -type f -wholename "*Pass2*sam" -exec sh -c '
         echo $prevDir
         echo $lastDir
         echo proccessing  $fileName from $(pwd)/$lastDir into $prevDir.counts.txt;
-        featureCounts -a gencode.v25lift37.annotation.gtf.gz -o $prevDir.counts.txt -T 12 -t exon -g gene_id $f
+        featureCounts -a gencode.v25lift37.annotation.gtf.gz -o $prevDir.counts.txt -T 64 -t exon -g gene_id $f
     done' sh {} +
