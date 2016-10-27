@@ -86,6 +86,6 @@ done
 
 find . -type f -name '*.sam' -exec sh -c '
     for f
-    do echo $f
-    featureCounts $f
+        do echo $f
+        featureCounts $f
     done' sh {} +
