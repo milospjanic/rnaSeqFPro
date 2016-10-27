@@ -84,7 +84,7 @@ done
 
 #counting with featureCounts
 
-find . -type f -name '*.html' -exec sh -c '
+find . -type f -name '*.sam' -exec sh -c '
     for f
     do echo $f
     featureCounts $f
