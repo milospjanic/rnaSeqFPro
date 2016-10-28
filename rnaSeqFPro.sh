@@ -1,13 +1,13 @@
 #!/bin/bash
 
-#fastqc quality control - requires fastqc installed and placed in PATH
+###fastqc quality control - requires fastqc installed and placed in PATH
 
 ls -1 *fastq.gz > commands.1
 sed -i 's/^/.\/FastQC\/fastqc /g' commands.1
 
 source commands.1
 
-#mapping with STAR - requires STAR installed and copied to PATH
+###mapping with STAR - requires STAR installed and copied to PATH
 
 
 files=(*fastq.gz)
@@ -80,7 +80,7 @@ rm sam.tmp
 rm commands.2
 rm merge.tmp
 
-#counting with featureCounts
+###counting with featureCounts
 
 find . -type f -wholename "*Pass2*sam" -exec sh -c '
     for f
@@ -94,3 +94,40 @@ find . -type f -wholename "*Pass2*sam" -exec sh -c '
         echo proccessing  $fileName from $(pwd)/$lastDir into $prevDir.counts.txt;
         featureCounts -a gencode.v25lift37.annotation.gtf.gz -o $prevDir.counts.txt -T 64 -t exon -g gene_id $f
     done' sh {} +
+    
+# Find all files with .file extension and cut the first and $2 column, save it as .cut file
+
+find -name '*.counts.txt' | xargs -I % sh -c 'cut -f 1,'$2' %  > %.cut1;'
+
+# remove header
+find -name '*.counts.txt.cut1' | xargs -I % sh -c 'tail -n+2 % > %.cut2;'
+
+# download fileMulti2TableMod1.awk
+
+wget https://raw.githubusercontent.com/milospjanic/fileMulti2TableMod1/master/fileMulti2TableMod1.awk
+
+# Find .file.cut files and call fileMulti2TableMod1.awk script to create master table
+
+filescut=$(ls *.counts.txt.cut1.cut2) 
+awk -f fileMulti2TableMod1.awk $(echo $filescut)> mastertable
+
+# add header to mastertable
+
+files=$(ls *.counts.txt.cut1.cut2) 
+echo ${files} | sed 's/.counts.txt.cut1.cut2//g' > header
+awk '{$1=" "$1}1' header > header2
+cat header2 mastertable > mastertable.2
+
+mv mastertable.2 mastertable
+
+# remove .cut files
+rm *.counts.txt.cut1
+rm *.counts.txt.cut1.cut2
+
+# remove fileMulti2TableMod1.awk
+rm fileMulti2TableMod1.awk
+
+#remove header
+rm header
+rm header2
+
