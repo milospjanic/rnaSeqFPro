@@ -27,20 +27,20 @@ for (( i=0; i<${#files[@]} ; i+=2 )) ; do
     # run 1st pass
         mkdir Pass1
         cd Pass1
-        STAR ${CommonPars} --genomeDir ${GenomeDir} --readFilesIn ${Reads}
+        STAR $CommonPars --genomeDir $GenomeDir --readFilesIn $Reads
         cd ..
     # make splice junctions database file out of SJ.out.tab, filter out non-canonical junctions
         mkdir GenomeForPass2
         cd GenomeForPass2
         awk 'BEGIN {OFS="\t"; strChar[0]="."; strChar[1]="+"; strChar[2]="-";} {if(\$5>0){print \$1,\$2,\$3,strChar[\$4]}}' ../Pass1/SJ.out.tab > SJ.out.tab.Pass1.sjdb
     # generate genome with junctions from the 1st pass
-        STAR --genomeDir ./ --runMode genomeGenerate --genomeFastaFiles ${GenomeFasta} --sjdbFileChrStartEnd SJ.out.tab.Pass1.sjdb --sjdbOverhang 100 --runThreadN 64
+        STAR --genomeDir ./ --runMode genomeGenerate --genomeFastaFiles $GenomeFasta --sjdbFileChrStartEnd SJ.out.tab.Pass1.sjdb --sjdbOverhang 100 --runThreadN 64
         cd ..
     # run 2nd pass with the new genome
         mkdir Pass2
         cd Pass2
-        STAR ${CommonPars} --genomeDir ../GenomeForPass2 --readFilesIn ${Reads}
-        echo FINISHED ${Reads}
+        STAR $CommonPars --genomeDir ../GenomeForPass2 --readFilesIn $Reads
+        echo FINISHED $Reads
         cd ..
         cd ..
         done
