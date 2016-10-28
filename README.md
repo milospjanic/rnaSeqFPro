@@ -64,3 +64,11 @@ cd ~/reference_genomes
 STAR  --runMode genomeGenerate --runThreadN 64 --genomeDir ./ --genomeFastaFiles hg19.fa
 </pre>
 
+**Download GENCODE transcript annotation**
+
+For example for human hg19 genome:
+<pre>
+wget ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_human/release_25/GRCh37_mapping/gencode.v25lift37.annotation.gtf.gz
+</pre>
+
+**Install featureCounts**
