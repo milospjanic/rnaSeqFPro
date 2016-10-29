@@ -15,13 +15,14 @@ for (( i=0; i<${#files[@]} ; i+=2 )) ; do
     mkdir "${files[i]}.${files[i+1]}.STAR"    
 done 
 
+GenomeDir='~/reference_genomes/hg19/'
+GenomeFasta='~/reference_genomes/hg19/hg19.fa'
+CommonPars='--runThreadN 64 --outSAMattributes All --genomeLoad NoSharedMemory'
+
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
   cat >> commands.2.${files[i]}.${files[i+1]}.tmp <<EOL
 #!/bin/bash
- GenomeDir="~/reference_genomes/"
- GenomeFasta="~/reference_genomes/hg19.fa"
- CommonPars="--runThreadN 64 --outSAMattributes All --genomeLoad NoSharedMemory"
     echo Proccessing `pwd`: ${files[i]} ${files[i+1]}
      
     # run 1st pass
