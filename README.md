@@ -48,6 +48,8 @@ Download the reference genome, in this example it is human hg19:
 <pre>
 mkdir ~/reference_genomes
 cd ~/reference_genomes
+mkdir hg19
+cd hg19
 wget --timestamping 
         'ftp://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.2bit ' 
         -O hg19.2bit 
