@@ -24,7 +24,9 @@ for (( i=0; i<${#files[@]} ; i+=2 )) ; do
   cat >> commands.2.${files[i]}.${files[i+1]}.tmp <<EOL
 #!/bin/bash
     echo Proccessing `pwd`: ${files[i]} ${files[i+1]}
-     
+
+    # enter the correct folder
+        cd ${files[i]}.${files[i+1]}.STAR
     # run 1st pass
         mkdir Pass1
         cd Pass1
