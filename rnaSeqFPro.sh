@@ -21,12 +21,17 @@ CommonPars='--runThreadN 64 --outSAMattributes All --genomeLoad NoSharedMemory'
 
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
+
+echo ${pwd}/${files[i]} ${pwd}/${files[i+1]}
+Reads=""$pwd"/"${files[i]}" "${pwd}"/"${files[i+1]}" --readFilesCommand zcat"
+echo $Reads
+
   cat >> commands.2.${files[i]}.${files[i+1]}.tmp <<EOL
 #!/bin/bash
     echo Proccessing `pwd`: ${files[i]} ${files[i+1]}
 
     # enter the correct folder
-        cd ${files[i]}.${files[i+1]}.STAR
+	cd ${files[i]}.${files[i+1]}.STAR
     # run 1st pass
         mkdir Pass1
         cd Pass1
@@ -43,7 +48,7 @@ for (( i=0; i<${#files[@]} ; i+=2 )) ; do
         mkdir Pass2
         cd Pass2
         STAR $CommonPars --genomeDir ../GenomeForPass2 --readFilesIn $Reads
-        echo FINISHED $Reads
+        echo FINISHED ${pwd}/${files[i]} ${pwd}/${files[i+1]} 
         cd ..
         cd ..
         done
@@ -133,4 +138,3 @@ rm fileMulti2TableMod1.awk
 #remove header
 rm header
 rm header2
-
