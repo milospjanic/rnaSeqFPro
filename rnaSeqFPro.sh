@@ -103,9 +103,9 @@ find . -type f -wholename "*Pass2*sam" -exec sh -c '
         featureCounts -a gencode.v25lift37.annotation.gtf -o $prevDir.counts.txt -T 64 -t exon -g gene_id $f
     done' sh {} +
     
-# Find all files with .file extension and cut the first and $2 column, save it as .cut file
+# Find all files with .counts.txt extension and cut the first and $2 column, save it as .cut file
 
-find -name '*.counts.txt' | xargs -I % sh -c 'cut -f 1,'$2' %  > %.cut1;'
+find -name '*.counts.txt' | xargs -I % sh -c 'cut -f 1,7 %  > %.cut1;'
 
 # remove header
 find -name '*.counts.txt.cut1' | xargs -I % sh -c 'tail -n+2 % > %.cut2;'
