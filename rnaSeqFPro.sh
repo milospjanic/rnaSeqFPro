@@ -15,15 +15,15 @@ for (( i=0; i<${#files[@]} ; i+=2 )) ; do
     mkdir "${files[i]}.${files[i+1]}.STAR"    
 done 
 
-GenomeDir='~/reference_genomes/hg19/'
-GenomeFasta='~/reference_genomes/hg19/hg19.fa'
+GenomeDir='~/reference_genomes/mm10/'
+GenomeFasta='~/reference_genomes/mm10/mm10.fa'
 CommonPars='--runThreadN 64 --outSAMattributes All --genomeLoad NoSharedMemory'
 
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
 
-echo ${pwd}/${files[i]} ${pwd}/${files[i+1]}
-Reads=""$pwd"/"${files[i]}" "${pwd}"/"${files[i+1]}" --readFilesCommand zcat"
+echo $(pwd)/${files[i]} $(pwd)/${files[i+1]}
+Reads="$(pwd)/"${files[i]}" $(pwd)/"${files[i+1]}" --readFilesCommand zcat"
 echo $Reads
 
   cat >> commands.2.${files[i]}.${files[i+1]}.tmp <<EOL
@@ -51,7 +51,7 @@ echo $Reads
         echo FINISHED ${pwd}/${files[i]} ${pwd}/${files[i+1]} 
         cd ..
         cd ..
-        done
+        
 EOL
   done
 
@@ -100,7 +100,7 @@ find . -type f -wholename "*Pass2*sam" -exec sh -c '
         echo $prevDir
         echo $lastDir
         echo proccessing  $fileName from $(pwd)/$lastDir into $prevDir.counts.txt;
-        featureCounts -a gencode.v25lift37.annotation.gtf.gz -o $prevDir.counts.txt -T 64 -t exon -g gene_id $f
+        featureCounts -a gencode.v25lift37.annotation.gtf -o $prevDir.counts.txt -T 64 -t exon -g gene_id $f
     done' sh {} +
     
 # Find all files with .file extension and cut the first and $2 column, save it as .cut file
@@ -138,3 +138,4 @@ rm fileMulti2TableMod1.awk
 #remove header
 rm header
 rm header2
+
