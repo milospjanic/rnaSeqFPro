@@ -192,6 +192,12 @@ mv mastertable.genename.2 mastertable.genename
 rm header
 tabsep mastertable.genename
 
+sort -k1,1 -knr2,2 mastertable.genename > mastertable.genename.2 
+awk '!a[$1]++' mastertable.genename.2 > mastertable.genename.3
+mv mastertable.genename.3 mastertable.genename
+rm mastertable.genename.2
+
+
 #remove temporary files
 
 rm id_merge.mrna.txt
