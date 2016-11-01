@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 ###fastqc quality control - requires fastqc installed and placed in PATH
 
 ls -1 *fastq.gz > commands.1
@@ -7,16 +8,16 @@ sed -i 's/^/.\/FastQC\/fastqc /g' commands.1
 
 source commands.1
 
-###mapping with STAR - requires STAR installed and copied to PATH
 
+###mapping with STAR - requires STAR installed and copied to PATH
 
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    mkdir "${files[i]}.${files[i+1]}.STAR"    
-done 
+    mkdir "${files[i]}.${files[i+1]}.STAR"
+done
 
-GenomeDir='~/reference_genomes/mm10/'
-GenomeFasta='~/reference_genomes/mm10/mm10.fa'
+GenomeDir='~/reference_genomes/hg19/'
+GenomeFasta='~/reference_genomes/hg19/hg19.fa'
 CommonPars='--runThreadN 64 --outSAMattributes All --genomeLoad NoSharedMemory'
 
 files=(*fastq.gz)
@@ -31,7 +32,7 @@ echo $Reads
     echo Proccessing `pwd`: ${files[i]} ${files[i+1]}
 
     # enter the correct folder
-	cd ${files[i]}.${files[i+1]}.STAR
+        cd ${files[i]}.${files[i+1]}.STAR
     # run 1st pass
         mkdir Pass1
         cd Pass1
@@ -48,10 +49,10 @@ echo $Reads
         mkdir Pass2
         cd Pass2
         STAR $CommonPars --genomeDir ../GenomeForPass2 --readFilesIn $Reads
-        echo FINISHED ${pwd}/${files[i]} ${pwd}/${files[i+1]} 
+        echo FINISHED ${pwd}/${files[i]} ${pwd}/${files[i+1]}
         cd ..
         cd ..
-        
+
 EOL
   done
 
@@ -79,7 +80,7 @@ touch sam.tmp
 
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    echo "${files[i]}.${files[i+1]}.sam" >> sam.tmp     
+    echo "${files[i]}.${files[i+1]}.sam" >> sam.tmp
 done
 
 awk 'FNR==NR{a[FNR]=$0;next}{ print $0,">",a[FNR]}' sam.tmp commands.2 > merge.tmp
@@ -88,7 +89,10 @@ rm sam.tmp
 rm commands.2
 rm merge.tmp
 
+
 ###counting with featureCounts
+
+#naming the output files by the second to last subfolder in path
 
 find . -type f -wholename "*Pass2*sam" -exec sh -c '
     for f
@@ -102,7 +106,7 @@ find . -type f -wholename "*Pass2*sam" -exec sh -c '
         echo proccessing  $fileName from $(pwd)/$lastDir into $prevDir.counts.txt;
         featureCounts -a gencode.v25lift37.annotation.gtf -o $prevDir.counts.txt -T 64 -t exon -g gene_id $f
     done' sh {} +
-    
+
 # Find all files with .counts.txt extension and cut the first and $2 column, save it as .cut file
 
 find -name '*.counts.txt' | xargs -I % sh -c 'cut -f 1,7 %  > %.cut1;'
@@ -116,12 +120,16 @@ wget https://raw.githubusercontent.com/milospjanic/fileMulti2TableMod1/master/fi
 
 # Find .file.cut files and call fileMulti2TableMod1.awk script to create master table
 
-filescut=$(ls *.counts.txt.cut1.cut2) 
+filescut=$(ls *.counts.txt.cut1.cut2)
 awk -f fileMulti2TableMod1.awk $(echo $filescut)> mastertable
+
+#clean up mastertable
+sed -e 's/\.[0-9]*//g' mastertable | sed 's/_[0-9]*//g' > mastertable.2
+mv mastertable.2 mastertable
 
 # add header to mastertable
 
-files=$(ls *.counts.txt.cut1.cut2) 
+files=$(ls *.counts.txt.cut1.cut2)
 echo ${files} | sed 's/.counts.txt.cut1.cut2//g' > header
 awk '{$1=" "$1}1' header > header2
 cat header2 mastertable > mastertable.2
@@ -138,4 +146,64 @@ rm fileMulti2TableMod1.awk
 #remove header
 rm header
 rm header2
+
+
+###write R script for ID conversion, needs biomaRt
+
+echo "#!/usr/bin/Rscript
+library(biomaRt)
+listMarts(host=\"grch37.ensembl.org\")
+
+ensembl = useMart(\"ENSEMBL_MART_ENSEMBL\",dataset=\"hsapiens_gene_ensembl\", host=\"grch37.ensembl.org\")
+
+id_merge_mrna = getBM(attributes=c(\"ensembl_gene_id\",\"refseq_mrna\"),mart=ensembl)
+write.table(id_merge_mrna, file=\"id_merge.mrna.txt\", sep = \"\t\", quote =F, col.names=F, row.names=F)
+
+id_merge_ncrna = getBM(attributes=c(\"ensembl_gene_id\",\"refseq_ncrna\"),mart=ensembl)
+write.table(id_merge_ncrna, file=\"id_merge.ncrna.txt\", sep = \"\t\", quote =F, col.names=F, row.names=F)
+
+" > script.r
+
+#run R script
+
+chmod 775 script.r
+./script.r
+
+awk < id_merge.mrna.txt > id_merge.mrna.short.txt 'NF>1'
+awk < id_merge.ncrna.txt > id_merge.ncrna.short.txt 'NF>1'
+mv id_merge.mrna.short.txt id_merge.mrna.txt
+mv id_merge.ncrna.short.txt id_merge.ncrna.txt
+cat id_merge.mrna.txt id_merge.ncrna.txt > id_merge.txt
+
+tabsep id_merge.txt
+tabsep mastertable
+
+#Use awk to append gene names
+
+awk 'NR==FNR {h[$1] = $1; h2[$1] = $2; next} {if (h2[$1]) print h2[$1], $0}' id_merge.txt mastertable > mastertable.genename
+tabsep mastertable.genename
+cut -f1,3- mastertable.genename >mastertable.genename.2
+mv mastertable.genename.2 mastertable.genename
+head -n1 mastertable > header
+sed -i 's/.fastq.gz//g'  header
+sed -i 's/.STAR//g' header
+cat header mastertable.genename > mastertable.genename.2
+mv mastertable.genename.2 mastertable.genename
+rm header
+tabsep mastertable.genename
+
+#remove temporary files
+
+rm id_merge.mrna.txt
+rm id_merge.ncrna.txt
+#rm id_merge.txt
+rm script.r
+
+
+###create  R script
+touch script.R
+
+echo "#!/usr/bin/Rscript" > script.R
+echo "library(rgsepd)" >>script.R
+echo "data<-read.delim(\"mastertable.genenames\", header=T)" >>script.R
 
