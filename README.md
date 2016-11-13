@@ -8,6 +8,7 @@ rnaSeqFPro is a script that will do full processing of paired RNA-Seq data start
 
 <pre>
 mkdir work.folder
+cp path-to-files/*fastq.gz work.folder
 </pre>
 
 **FastQC**
