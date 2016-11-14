@@ -120,10 +120,10 @@ Creating meta data table is necessary for RGSEPD to perform analysis using DESeq
 
 <pre>
 Sample  Condition       SHORTNAME
-file.name.1 A COND1
-file.name.2 A COND1
-file.name.3 B COND2
-file.name.3 B COND2
+file.name.1 A CONDITION1
+file.name.2 A CONDITION1
+file.name.3 B CONDITION2
+file.name.3 B CONDITION2
 </pre>
 
 rnaSeqFPro is composed of four pipelines that will run a RGSEPD version on either human genome hg19 or mouse genome mm10, using either paired-end (PE) or single-read (SR) sequences. 
