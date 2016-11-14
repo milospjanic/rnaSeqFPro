@@ -82,28 +82,39 @@ Install featureCounts. Downoad Subread binary from Sourceforge.
 <pre>
 wget https://sourceforge.net/projects/subread/files/subread-1.5.1/subread-1.5.1-Linux-x86_64.tar.gz/download
 </pre>
-Download fileMulti2TableMod1.
-	
+
+**Download fileMulti2TableMod1.**
+
+<pre>
 wget https://raw.githubusercontent.com/milospjanic/fileMulti2TableMod1/master/fileMulti2TableMod1.awk
-	
-In R install RGSEPD from Bioconductor.
-	
+</pre>	
+
+**In R install RGSEPD from Bioconductor.**
+
+<pre>
 source("https://bioconductor.org/biocLite.R")
 biocLite("rgsepd")
+</pre>
 
-In R install DESeq2
-		
+**In R install DESeq2.**
+
+<pre>
 source("https://bioconductor.org/biocLite.R")
 biocLite("DESeq2")
+</pre>
 
-In R install goseq
-		
+**In R install goseq**
+
+<pre>
 source("https://bioconductor.org/biocLite.R")
 biocLite("goseq")
+</pre>
 
-Download Kallisto binary.
-	
+**Download Kallisto binary.**
+
+<pre>	
 wget https://github.com/pachterlab/kallisto/releases/download/v0.43.0/kallisto_linux-v0.43.0.tar.gz
+</pre>
 
 Creating meta data table is necessary for RGSEPD to perform analysis using DESeq2/goseq. Table 1. shows an example of a meta data sheet. Note that sample names must be shown without .fastq.gz extension.
 
@@ -114,8 +125,16 @@ file.name.3 B CONDITION2
 file.name.3 B CONDITION2
 </pre>
 
-rnaSeqFPro is composed of four pipelines that will run a RGSEPD version on either human genome hg19 or mouse genome mm10, using either paired-end (PE) or single-read (SR) sequences. Four additional pipelines are available to run a Kallisto version: PE hg19, SR hg19, PE mm10, and SR mm10. After placing files in the working folder run the script that is suitable for your experiment, e.g: 
+rnaSeqFPro is composed of four pipelines that will run a RGSEPD version on either human genome hg19 or mouse genome mm10, using either paired-end (PE) or single-read (SR) sequences. 
 
+
+
+Four additional pipelines are available to run a Kallisto version: PE hg19, SR hg19, PE mm10, and SR mm10. 
+
+
+After placing files in the working folder run the script that is suitable for your experiment, e.g: 
+
+<pre>
 chmod 755 rnaSeqFPro.PE.hg19.sh
 ./rnaSeqFPro.PE.hg19.sh
-
+</pre>
