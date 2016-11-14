@@ -112,7 +112,7 @@ biocLite("goseq")
 
 **Download Kallisto binary.**
 
-<pre>	
+<pre>
 wget https://github.com/pachterlab/kallisto/releases/download/v0.43.0/kallisto_linux-v0.43.0.tar.gz
 </pre>
 
@@ -127,10 +127,14 @@ file.name.3 B CONDITION2
 
 rnaSeqFPro is composed of four pipelines that will run a RGSEPD version on either human genome hg19 or mouse genome mm10, using either paired-end (PE) or single-read (SR) sequences. 
 
-
+<pre>
+rnaSeqFPro.PE.hg19.sh
+rnaSeqFPro.PE.mm10.sh
+rnaSeqFPro.SR.hg19.sh
+rnaSeqFPro.SR.mm10.sh
+</pre>
 
 Four additional pipelines are available to run a Kallisto version: PE hg19, SR hg19, PE mm10, and SR mm10. 
-
 
 After placing files in the working folder run the script that is suitable for your experiment, e.g: 
 
