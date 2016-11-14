@@ -77,3 +77,45 @@ wget ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_human/release_25/GRCh37_mapping/
 </pre>
 
 **Install featureCounts**
+
+Install featureCounts. Downoad Subread binary from Sourceforge.
+<pre>
+wget https://sourceforge.net/projects/subread/files/subread-1.5.1/subread-1.5.1-Linux-x86_64.tar.gz/download
+</pre>
+Download fileMulti2TableMod1.
+	
+wget https://raw.githubusercontent.com/milospjanic/fileMulti2TableMod1/master/fileMulti2TableMod1.awk
+	
+In R install RGSEPD from Bioconductor.
+	
+source("https://bioconductor.org/biocLite.R")
+biocLite("rgsepd")
+
+In R install DESeq2
+		
+source("https://bioconductor.org/biocLite.R")
+biocLite("DESeq2")
+
+In R install goseq
+		
+source("https://bioconductor.org/biocLite.R")
+biocLite("goseq")
+
+Download Kallisto binary.
+	
+wget https://github.com/pachterlab/kallisto/releases/download/v0.43.0/kallisto_linux-v0.43.0.tar.gz
+
+Creating meta data table is necessary for RGSEPD to perform analysis using DESeq2/goseq. Table 1. shows an example of a meta data sheet. Note that sample names must be shown without .fastq.gz extension.
+
+file.name.1 A CONDITION1
+file.name.2 A CONDITION1
+file.name.3 B CONDITION2
+file.name.3
+B
+CONDITION2
+
+rnaSeqFPro is composed of four pipelines that will run a RGSEPD version on either human genome hg19 or mouse genome mm10, using either paired-end (PE) or single-read (SR) sequences. Four additional pipelines are available to run a Kallisto version: PE hg19, SR hg19, PE mm10, and SR mm10. After placing files in the working folder run the script that is suitable for your experiment, e.g: 
+
+chmod 755 rnaSeqFPro.PE.hg19.sh
+./rnaSeqFPro.PE.hg19.sh
+
