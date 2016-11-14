@@ -136,6 +136,13 @@ rnaSeqFPro.SR.mm10.sh
 
 Four additional pipelines are available to run a Kallisto version: PE hg19, SR hg19, PE mm10, and SR mm10. 
 
+<pre>
+rnaSeqFPro.PE.hg19.Kallisto.sh
+rnaSeqFPro.PE.mm10.Kallisto.sh
+rnaSeqFPro.SR.hg19.Kallisto.sh
+rnaSeqFPro.SR.mm10.Kallisto.sh
+</pre>
+
 After placing files in the working folder run the script that is suitable for your experiment, e.g: 
 
 <pre>
