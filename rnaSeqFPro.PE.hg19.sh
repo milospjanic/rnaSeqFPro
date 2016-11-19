@@ -12,27 +12,27 @@ source commands.1
 ###mapping with STAR - requires STAR installed and copied to PATH
 
 files=(*fastq.gz)
-for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    mkdir "${files[i]}.${files[i+1]}.STAR"
-done
+for (( i=0; i<${#files[@]} ; i+=1 )) ; do
+    mkdir "${files[i]}.STAR"    
+done 
 
 GenomeDir='~/reference_genomes/hg19/'
 GenomeFasta='~/reference_genomes/hg19/hg19.fa'
 CommonPars='--runThreadN 64 --outSAMattributes All --genomeLoad NoSharedMemory'
 
 files=(*fastq.gz)
-for (( i=0; i<${#files[@]} ; i+=2 )) ; do
+for (( i=0; i<${#files[@]} ; i+=1 )) ; do
 
-echo $(pwd)/${files[i]} $(pwd)/${files[i+1]}
-Reads="$(pwd)/"${files[i]}" $(pwd)/"${files[i+1]}" --readFilesCommand zcat"
+echo $(pwd)/${files[i]}
+Reads="$(pwd)/"${files[i]}" --readFilesCommand zcat"
 echo $Reads
 
-  cat >> commands.2.${files[i]}.${files[i+1]}.tmp <<EOL
+  cat >> commands.2.${files[i]}.tmp <<EOL
 #!/bin/bash
-    echo Proccessing `pwd`: ${files[i]} ${files[i+1]}
+    echo Proccessing `pwd`: ${files[i]}
 
     # enter the correct folder
-        cd ${files[i]}.${files[i+1]}.STAR
+	cd ${files[i]}.STAR
     # run 1st pass
         mkdir Pass1
         cd Pass1
@@ -49,45 +49,45 @@ echo $Reads
         mkdir Pass2
         cd Pass2
         STAR $CommonPars --genomeDir ../GenomeForPass2 --readFilesIn $Reads
-        echo FINISHED ${pwd}/${files[i]} ${pwd}/${files[i+1]}
+        echo FINISHED ${pwd}/${files[i]} 
         cd ..
         cd ..
-
+        
 EOL
   done
 
 files=(*fastq.gz)
-for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    sed -i "8i\\\tcd ${files[i]}.${files[i+1]}.STAR" commands.2.${files[i]}.${files[i+1]}.tmp
+for (( i=0; i<${#files[@]} ; i+=1 )) ; do
+    sed -i "8i\\\tcd ${files[i]}.STAR" commands.2.${files[i]}.tmp
 done
 
-for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    sed -i "2i\ Reads=\"`pwd`/${files[i]} `pwd`/${files[i+1]} --readFilesCommand zcat\"" commands.2.${files[i]}.${files[i+1]}.tmp
+for (( i=0; i<${#files[@]} ; i+=1 )) ; do
+    sed -i "2i\ Reads=\"`pwd`/${files[i]} --readFilesCommand zcat\"" commands.2.${files[i]}.tmp
 done
 
-for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    source commands.2.${files[i]}.${files[i+1]}.tmp
+for (( i=0; i<${#files[@]} ; i+=1 )) ; do
+    source commands.2.${files[i]}.tmp
 done
 
 #subscrips
 
-files=(*fastq.gz)
-for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    echo "${files[i]}" "${files[i+1]}" >> commands.2
-done
+#files=(*fastq.gz)
+#for (( i=0; i<${#files[@]} ; i+=1 )) ; do
+    #echo "${files[i]}" >> commands.2
+#done
 
-touch sam.tmp
+#touch sam.tmp
 
-files=(*fastq.gz)
-for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    echo "${files[i]}.${files[i+1]}.sam" >> sam.tmp
-done
+#files=(*fastq.gz)
+#for (( i=0; i<${#files[@]} ; i+=1 )) ; do
+    #echo "${files[i]}.sam" >> sam.tmp     
+#done
 
-awk 'FNR==NR{a[FNR]=$0;next}{ print $0,">",a[FNR]}' sam.tmp commands.2 > merge.tmp
+#awk 'FNR==NR{a[FNR]=$0;next}{ print $0,">",a[FNR]}' sam.tmp commands.2 > merge.tmp
 
-rm sam.tmp
-rm commands.2
-rm merge.tmp
+#rm sam.tmp
+#rm commands.2
+#rm merge.tmp
 
 
 ###counting with featureCounts
@@ -106,7 +106,7 @@ find . -type f -wholename "*Pass2*sam" -exec sh -c '
         echo proccessing  $fileName from $(pwd)/$lastDir into $prevDir.counts.txt;
         featureCounts -a gencode.v25lift37.annotation.gtf -o $prevDir.counts.txt -T 64 -t exon -g gene_id $f
     done' sh {} +
-
+    
 # Find all files with .counts.txt extension and cut the first and $2 column, save it as .cut file
 
 find -name '*.counts.txt' | xargs -I % sh -c 'cut -f 1,7 %  > %.cut1;'
@@ -120,7 +120,7 @@ wget https://raw.githubusercontent.com/milospjanic/fileMulti2TableMod1/master/fi
 
 # Find .file.cut files and call fileMulti2TableMod1.awk script to create master table
 
-filescut=$(ls *.counts.txt.cut1.cut2)
+filescut=$(ls *.counts.txt.cut1.cut2) 
 awk -f fileMulti2TableMod1.awk $(echo $filescut)> mastertable
 
 #clean up mastertable
@@ -129,7 +129,7 @@ mv mastertable.2 mastertable
 
 # add header to mastertable
 
-files=$(ls *.counts.txt.cut1.cut2)
+files=$(ls *.counts.txt.cut1.cut2) 
 echo ${files} | sed 's/.counts.txt.cut1.cut2//g' > header
 awk '{$1=" "$1}1' header > header2
 cat header2 mastertable > mastertable.2
@@ -192,11 +192,10 @@ mv mastertable.genename.2 mastertable.genename
 rm header
 tabsep mastertable.genename
 
-sort -k1,1 -knr2,2 mastertable.genename > mastertable.genename.2 
-awk '!a[$1]++' mastertable.genename.2 > mastertable.genename.3
-mv mastertable.genename.3 mastertable.genename
-rm mastertable.genename.2
+#reassign GENCODE counted reads on RefSeq identifiers - solution to ambiguous isoform assignment error
 
+awk '{for(i=1;i<=NF;i++) t+=$i; print t"\t"$0; t=0}' mastertable.genename | sort -k2,2 -k1,1nr | awk '!a[$2]++' | cut -f2- > mastertable.genename.cleaned
+mv mastertable.genename.cleaned mastertable.genename
 
 #remove temporary files
 
@@ -207,9 +206,27 @@ rm script.r
 
 
 ###create  R script
+
 touch script.R
 
 echo "#!/usr/bin/Rscript" > script.R
 echo "library(rgsepd)" >>script.R
-echo "data<-read.delim(\"mastertable.genenames\", header=T)" >>script.R
+echo "data<-read.delim(\"mastertable.genename\", header=T, row.names = 1)" >>script.R
+echo "meta<-read.delim(\"meta.data\", header=T, row.names = 1)" >>script.R
 
+echo "G <- GSEPD_INIT(Output_Folder=\"GSEPD OUTPUT\", finalCounts=data, sampleMeta=meta, COLORS=c(blue=\"#4DA3FF\",black=\"#000000\",gold=\"#FFFF4D\"))" >> script.R
+
+echo "G <- GSEPD_ChangeConditions( G, c(\"A\",\"B\"))" >>script.R
+echo "G <- GSEPD_Process( G )" >> script.R
+
+touch script.R
+
+echo "#!/usr/bin/Rscript" > script2.R
+echo "library(rgsepd)" >>script2.R
+echo "data<-read.delim(\"mastertable.genename\", header=T, row.names = 1)" >>script2.R
+echo "meta<-read.delim(\"meta.data\", header=T, row.names = 1)" >>script2.R
+
+echo "G <- GSEPD_INIT(Output_Folder=\"GSEPD OUTPUT\", finalCounts=data, sampleMeta=meta, COLORS=c(blue=\"#4DA3FF\",black=\"#000000\",gold=\"#FFFF4D\"))" >> script2.R
+
+echo "G <- GSEPD_ChangeConditions( G, c(\"D\",\"C\"))" >>script2.R
+echo "G <- GSEPD_Process( G )" >> script2.R
