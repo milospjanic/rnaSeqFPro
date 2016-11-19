@@ -219,14 +219,4 @@ echo "G <- GSEPD_INIT(Output_Folder=\"GSEPD OUTPUT\", finalCounts=data, sampleMe
 echo "G <- GSEPD_ChangeConditions( G, c(\"A\",\"B\"))" >>script.R
 echo "G <- GSEPD_Process( G )" >> script.R
 
-touch script.R
 
-echo "#!/usr/bin/Rscript" > script2.R
-echo "library(rgsepd)" >>script2.R
-echo "data<-read.delim(\"mastertable.genename\", header=T, row.names = 1)" >>script2.R
-echo "meta<-read.delim(\"meta.data\", header=T, row.names = 1)" >>script2.R
-
-echo "G <- GSEPD_INIT(Output_Folder=\"GSEPD OUTPUT\", finalCounts=data, sampleMeta=meta, COLORS=c(blue=\"#4DA3FF\",black=\"#000000\",gold=\"#FFFF4D\"))" >> script2.R
-
-echo "G <- GSEPD_ChangeConditions( G, c(\"D\",\"C\"))" >>script2.R
-echo "G <- GSEPD_Process( G )" >> script2.R
