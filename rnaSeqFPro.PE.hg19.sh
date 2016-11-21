@@ -220,6 +220,9 @@ echo "G <- GSEPD_INIT(Output_Folder=\"GSEPD OUTPUT\", finalCounts=data, sampleMe
 echo "G <- GSEPD_ChangeConditions( G, c(\"A\",\"B\"))" >>script.R
 echo "G <- GSEPD_Process( G )" >> script.R
 
+./script.R
+rm script.R
+
 duration=$SECONDS
 echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
 
