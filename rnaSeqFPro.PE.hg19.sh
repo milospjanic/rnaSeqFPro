@@ -13,8 +13,8 @@ source commands.1
 ###mapping with STAR - requires STAR installed and copied to PATH
 
 files=(*fastq.gz)
-for (( i=0; i<${#files[@]} ; i+=1 )) ; do
-    mkdir "${files[i]}.STAR"    
+for (( i=0; i<${#files[@]} ; i+=2 )) ; do
+    mkdir "${files[i]}.${files[i+1]}.STAR"    
 done 
 
 GenomeDir='~/reference_genomes/hg19/'
@@ -22,18 +22,18 @@ GenomeFasta='~/reference_genomes/hg19/hg19.fa'
 CommonPars='--runThreadN 64 --outSAMattributes All --genomeLoad NoSharedMemory'
 
 files=(*fastq.gz)
-for (( i=0; i<${#files[@]} ; i+=1 )) ; do
+for (( i=0; i<${#files[@]} ; i+=2 )) ; do
 
-echo $(pwd)/${files[i]}
-Reads="$(pwd)/"${files[i]}" --readFilesCommand zcat"
+echo $(pwd)/${files[i]} $(pwd)/${files[i+1]}
+Reads="$(pwd)/"${files[i]}" $(pwd)/"${files[i+1]}" --readFilesCommand zcat"
 echo $Reads
 
-  cat >> commands.2.${files[i]}.tmp <<EOL
+  cat >> commands.2.${files[i]}.${files[i+1]}.tmp <<EOL
 #!/bin/bash
-    echo Proccessing `pwd`: ${files[i]}
+    echo Proccessing `pwd`: ${files[i]} ${files[i+1]}
 
     # enter the correct folder
-	cd ${files[i]}.STAR
+	cd ${files[i]}.${files[i+1]}.STAR
     # run 1st pass
         mkdir Pass1
         cd Pass1
@@ -50,7 +50,7 @@ echo $Reads
         mkdir Pass2
         cd Pass2
         STAR $CommonPars --genomeDir ../GenomeForPass2 --readFilesIn $Reads
-        echo FINISHED ${pwd}/${files[i]} 
+        echo FINISHED ${pwd}/${files[i]} ${pwd}/${files[i+1]} 
         cd ..
         cd ..
         
@@ -58,37 +58,37 @@ EOL
   done
 
 files=(*fastq.gz)
-for (( i=0; i<${#files[@]} ; i+=1 )) ; do
-    sed -i "8i\\\tcd ${files[i]}.STAR" commands.2.${files[i]}.tmp
+for (( i=0; i<${#files[@]} ; i+=2 )) ; do
+    sed -i "8i\\\tcd ${files[i]}.${files[i+1]}.STAR" commands.2.${files[i]}.${files[i+1]}.tmp
 done
 
-for (( i=0; i<${#files[@]} ; i+=1 )) ; do
-    sed -i "2i\ Reads=\"`pwd`/${files[i]} --readFilesCommand zcat\"" commands.2.${files[i]}.tmp
+for (( i=0; i<${#files[@]} ; i+=2 )) ; do
+    sed -i "2i\ Reads=\"`pwd`/${files[i]} `pwd`/${files[i+1]} --readFilesCommand zcat\"" commands.2.${files[i]}.${files[i+1]}.tmp
 done
 
-for (( i=0; i<${#files[@]} ; i+=1 )) ; do
-    source commands.2.${files[i]}.tmp
+for (( i=0; i<${#files[@]} ; i+=2 )) ; do
+    source commands.2.${files[i]}.${files[i+1]}.tmp
 done
 
 #subscrips
 
-#files=(*fastq.gz)
-#for (( i=0; i<${#files[@]} ; i+=1 )) ; do
-    #echo "${files[i]}" >> commands.2
-#done
+files=(*fastq.gz)
+for (( i=0; i<${#files[@]} ; i+=2 )) ; do
+    echo "${files[i]}" "${files[i+1]}" >> commands.2
+done
 
-#touch sam.tmp
+touch sam.tmp
 
-#files=(*fastq.gz)
-#for (( i=0; i<${#files[@]} ; i+=1 )) ; do
-    #echo "${files[i]}.sam" >> sam.tmp     
-#done
+files=(*fastq.gz)
+for (( i=0; i<${#files[@]} ; i+=2 )) ; do
+    echo "${files[i]}.${files[i+1]}.sam" >> sam.tmp     
+done
 
-#awk 'FNR==NR{a[FNR]=$0;next}{ print $0,">",a[FNR]}' sam.tmp commands.2 > merge.tmp
+awk 'FNR==NR{a[FNR]=$0;next}{ print $0,">",a[FNR]}' sam.tmp commands.2 > merge.tmp
 
-#rm sam.tmp
-#rm commands.2
-#rm merge.tmp
+rm sam.tmp
+rm commands.2
+rm merge.tmp
 
 
 ###counting with featureCounts
@@ -212,8 +212,8 @@ touch script.R
 
 echo "#!/usr/bin/Rscript" > script.R
 echo "library(rgsepd)" >>script.R
-echo "data<-read.delim(\"mastertable.genename\", header=T, row.names = 1)" >>script.R
-echo "meta<-read.delim(\"meta.data\", header=T, row.names = 1)" >>script.R
+echo "data<-read.delim(\"mastertable.genenames\", header=T, row.names = 1)" >>script.R
+echo "meta<-read.delim(\"meta.data\", header=T)" >>script.R
 
 echo "G <- GSEPD_INIT(Output_Folder=\"GSEPD OUTPUT\", finalCounts=data, sampleMeta=meta, COLORS=c(blue=\"#4DA3FF\",black=\"#000000\",gold=\"#FFFF4D\"))" >> script.R
 
@@ -225,4 +225,3 @@ rm script.R
 
 duration=$SECONDS
 echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
-
