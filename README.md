@@ -77,7 +77,9 @@ wget ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_human/release_25/GRCh37_mapping/
 </pre>
 
 For mouse mm10 genome
-
+<pre>
+wget ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_mouse/release_M11/gencode.vM11.annotation.gtf.gz
+</pre>
 
 **Install featureCounts**
 
