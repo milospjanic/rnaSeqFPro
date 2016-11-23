@@ -76,6 +76,9 @@ For example for human hg19 genome:
 wget ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_human/release_25/GRCh37_mapping/gencode.v25lift37.annotation.gtf.gz
 </pre>
 
+For mouse mm10 genome
+
+
 **Install featureCounts**
 
 Install featureCounts. Downoad Subread binary from Sourceforge.
