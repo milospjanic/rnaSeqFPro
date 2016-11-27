@@ -61,6 +61,17 @@ chmod 755 twoBitToFa
 ./twoBitToFa hg19.2bit hg19.fa
 </pre>
 
+For the mouse genome:
+
+<pre>
+mkdir mm10
+cd mm10
+wget --timestamping 
+        ' http://hgdownload.cse.ucsc.edu/goldenPath/mm10/bigZips/mm10.2bit' 
+        -O mm10.2bit 	
+./twoBitToFa mm10.2bit mm10.fa
+</pre>
+
 **Indexing the reference genome**
 
 Use STAR to index the reference genome, use number of core on your machine, e.g. 64.
