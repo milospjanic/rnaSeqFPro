@@ -9,6 +9,9 @@ sed -i 's/^/.\/FastQC\/fastqc /g' commands.1
 
 source commands.1
 
+mkdir FastQC_OUTPUT
+mv *zip FastQC_OUTPUT
+mv *html FastQC_OUTPUT
 
 ###mapping with STAR - requires STAR installed and copied to PATH
 
