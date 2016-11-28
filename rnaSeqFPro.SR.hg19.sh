@@ -215,8 +215,8 @@ touch script.R
 
 echo "#!/usr/bin/Rscript" > script.R
 echo "library(rgsepd)" >>script.R
-echo "data<-read.delim(\"mastertable.genename\", header=T, row.names = 1)" >>script.R
-echo "meta<-read.delim(\"meta.data\", header=T, row.names = 1)" >>script.R
+echo "data<-read.delim(\"mastertable.genename\", header=T, row.names = 1, check.names=F)" >>script.R
+echo "meta<-read.delim(\"meta.data\", header=T)" >>script.R
 
 echo "G <- GSEPD_INIT(Output_Folder=\"GSEPD OUTPUT\", finalCounts=data, sampleMeta=meta, COLORS=c(blue=\"#4DA3FF\",black=\"#000000\",gold=\"#FFFF4D\"))" >> script.R
 
