@@ -223,7 +223,7 @@ echo "G <- GSEPD_INIT(Output_Folder=\"GSEPD OUTPUT\", finalCounts=data, sampleMe
 echo "G <- GSEPD_ChangeConditions( G, c(\"A\",\"B\"))" >>script.R
 echo "G <- GSEPD_Process( G )" >> script.R
 
-chmod 775 script.r
+chmod 775 script.R
 ./script.R
 rm script.R
 
