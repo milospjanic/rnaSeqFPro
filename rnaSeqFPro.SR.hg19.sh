@@ -210,7 +210,7 @@ rm id_merge.ncrna.txt
 rm script.r
 
 
-###create  R script
+###create  R script for RGSEPD
 
 touch script.R
 
