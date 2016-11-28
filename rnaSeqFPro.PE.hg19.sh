@@ -210,7 +210,7 @@ rm id_merge.ncrna.txt
 rm script.r
 
 
-###create  R script
+###create  R script for RGSEPD
 
 touch script.R
 
@@ -227,6 +227,10 @@ echo "G <- GSEPD_Process( G )" >> script.R
 chmod 775 script.R
 ./script.R
 rm script.R
+
+#create R script for DESeq
+
+touch script.deseq.R
 
 echo "#!/usr/bin/Rscript" > script.deseq.R
 echo "library(DESeq)" >> script.deseq.R
@@ -265,7 +269,7 @@ hmcol = colorRampPalette(brewer.pal(9, \"GnBu\"))(100)
 heatmap.2(exprs(vsd)[select,], col = hmcol, trace=\"none\", margin=c(10, 6))
 print(plotPCA(vsd, intgroup=c(\"condition\")))
 
-" > script.deseq.R
+" >> script.deseq.R
 
 chmod 775 script.deseq.R
 ./script.deseq.R
