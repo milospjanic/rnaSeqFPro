@@ -237,7 +237,7 @@ echo "library(DESeq)" >> script.deseq.R
 echo "data<-read.delim(\"mastertable.genename\", header=T, row.names = 1, check.names=F)" >>script.deseq.R
 echo "meta<-read.delim(\"meta.data\", header=T)" >>script.deseq.R
 ###
-echo "conds<-factor(meta$Condition)
+echo "conds<-factor(meta\$Condition)
 sampleTable<-data.frame(sampleName=colnames(data), condition=conds)
 countsTable = data
 #rownames(countsTable) <- countsTable$Geneid
@@ -254,11 +254,11 @@ plotDispEsts( cds )
 res = nbinomTest( cds, \"A\", \"B\" )
 head(res)
 plotMA(res)
-hist(res$pval, breaks=100, col=\"skyblue\", border=\"slateblue\", main=\"\")
-resSig = res[ res$padj < 0.1, ]
+hist(res\$pval, breaks=100, col=\"skyblue\", border=\"slateblue\", main=\"\")
+resSig = res[ res\$padj < 0.1, ]
 write.csv( res, file=\"Result_Table.csv\" )
-write.csv( resSig[ order( resSig$foldChange, -resSig$baseMean ), ] , file=\"DownReg_Result_Table.csv\" )
-write.csv( resSig[ order( -resSig$foldChange, -resSig$baseMean ), ], file=\"UpReg_Result_Table.csv\" )
+write.csv( resSig[ order( resSig\$foldChange, -resSig\$baseMean ), ] , file=\"DownReg_Result_Table.csv\" )
+write.csv( resSig[ order( -resSig\$foldChange, -resSig\$baseMean ), ], file=\"UpReg_Result_Table.csv\" )
 
 cdsBlind = estimateDispersions( cds, method=\"blind\" )
 vsd = varianceStabilizingTransformation( cdsBlind )
