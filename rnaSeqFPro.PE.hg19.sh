@@ -266,7 +266,7 @@ print(plotPCA(vsd, intgroup=c(\"condition\")))
 
 " > script.deseq.R
 
-chmod 775 script.deseq.r
+chmod 775 script.deseq.R
 ./script.deseq.R
 rm script.deseq.R
 
