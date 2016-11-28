@@ -152,7 +152,7 @@ file.name.3.R1.file.name.3.R2 B CONDITION2
 file.name.4.R1.file.name.4.R2 B CONDITION2
 </pre>
 
-**Note: the order of the samples in meta.data has to the same as in command: ls -1 for the script to work**
+**Note: the order of the samples in meta.data has to the same as in command: ls -1 for the script to work. RGSEPD will stop if the orders do not match between meta.data and mastertable, therefore create meta.data in the same order as the mastertable is created, using ls -1 hierarchy**
 
 rnaSeqFPro is composed of four pipelines that will run a RGSEPD version on either human genome hg19 or mouse genome mm10, using either paired-end (PE) or single-read (SR) sequences. 
 
