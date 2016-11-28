@@ -234,8 +234,8 @@ touch script.deseq.R
 
 echo "#!/usr/bin/Rscript" > script.deseq.R
 echo "library(DESeq)" >> script.deseq.R
-echo "data<-read.delim(\"mastertable.genename\", header=T, row.names = 1)" >>script.deseq.R
-echo "meta<-read.delim(\"meta.data\", header=T, row.names = 1)" >>script.deseq.R
+echo "data<-read.delim(\"mastertable.genename\", header=T, row.names = 1, check.names=F)" >>script.deseq.R
+echo "meta<-read.delim(\"meta.data\", header=T)" >>script.deseq.R
 ###
 echo "conds<-factor(meta$Condition)
 sampleTable<-data.frame(sampleName=colnames(data), condition=conds)
