@@ -181,4 +181,6 @@ chmod 755 rnaSeqFPro.PE.hg19.sh
 
 **If you are re-running the pipe and you have already previously ran the pipe, delete the GSEPD_OUTPUT folder as the RGSEPD needs to create this folder itself, it will stop if it enconters this folder already created** 
 
-**Don't forget to place the GENCODE gtf file into the working folder!**
+**Don't forget to place the GENCODE gtf file, FastQC folder and meta.data into the working folder! These are the 3 only requirments neccesary to be in the working directory, in addition to the fastqc.gz files**
+
+**Dont forget that reference genome needs to be in your ~/reference_genomes folder, in case your switch to another user account script may not work because it searches for ~/reference_genomes folder.**
