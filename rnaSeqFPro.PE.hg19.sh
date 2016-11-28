@@ -200,6 +200,7 @@ tabsep mastertable.genename
 
 awk '{for(i=1;i<=NF;i++) t+=$i; print t"\t"$0; t=0}' mastertable.genename | sort -k2,2 -k1,1nr | awk '!a[$2]++' | cut -f2- > mastertable.genename.cleaned
 mv mastertable.genename.cleaned mastertable.genename
+tabsep mastertable.genename
 
 #remove temporary files
 
