@@ -92,7 +92,7 @@ For mouse mm10 genome
 wget ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_mouse/release_M11/gencode.vM11.annotation.gtf.gz
 </pre>
 
-Place the GENCODE gtf file into the working folder**
+**Place the GENCODE gtf file into the working folder**
 
 **Install featureCounts**
 
