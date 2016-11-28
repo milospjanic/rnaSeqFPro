@@ -178,3 +178,5 @@ After placing files in the working folder run the script that is suitable for yo
 chmod 755 rnaSeqFPro.PE.hg19.sh
 ./rnaSeqFPro.PE.hg19.sh
 </pre>
+
+**If you are re-running the pipe and you have already previously ran the pipe, delete the GSEPD_OUTPUT folder as the RGSEPD needs to create this folder itself, it will stop if it enconters this folder already created** 
