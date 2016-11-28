@@ -223,6 +223,7 @@ echo "G <- GSEPD_INIT(Output_Folder=\"GSEPD OUTPUT\", finalCounts=data, sampleMe
 echo "G <- GSEPD_ChangeConditions( G, c(\"A\",\"B\"))" >>script.R
 echo "G <- GSEPD_Process( G )" >> script.R
 
+chmod 775 script.r
 ./script.R
 rm script.R
 
@@ -265,6 +266,7 @@ print(plotPCA(vsd, intgroup=c(\"condition\")))
 
 " > script.deseq.R
 
+chmod 775 script.deseq.r
 ./script.deseq.R
 rm script.deseq.R
 
