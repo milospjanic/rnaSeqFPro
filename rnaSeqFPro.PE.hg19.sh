@@ -247,7 +247,7 @@ cds <- estimateSizeFactors( cds )
 sizeFactors( cds )
 head(counts(cds))
 head(counts(cds,normalized=TRUE))
-#cds = estimateDispersions( cds, method="blind", sharingMode="fit-only" )
+cds = estimateDispersions( cds, method=\"blind\", sharingMode=\"fit-only\" )
 str( fitInfo(cds) )
 plotDispEsts( cds )
 
