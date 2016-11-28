@@ -13,15 +13,13 @@ cp path-to-files/*fastq.gz work.folder
 
 **FastQC**
 
-Instalation (Linux):
+Instalation (Linux), place FastQC folder in working directory:
 
 <pre>
 cd work.folder
 wget http://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.5.zip
 unzip fastqc_v0.11.5.zip
 chmod 755 ./FastQC/fastqc
-cp ./FastQC/fastqc /usr/local/bin #may not work run it locally via link:
-ln -s ./FastQC/fastqc .
 </pre>
 
 **STAR**
@@ -80,19 +78,19 @@ cd ~/reference_genomes
 STAR  --runMode genomeGenerate --runThreadN 64 --genomeDir ./ --genomeFastaFiles hg19.fa
 </pre>
 
-**Download GENCODE transcript annotation**
+**Download GENCODE transcript annotation to the working folder**
 
 For example for human hg19 genome:
 <pre>
+cd work.folder
 wget ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_human/release_25/GRCh37_mapping/gencode.v25lift37.annotation.gtf.gz
 </pre>
 
-For mouse mm10 genome
+For mouse mm10 genome:
 <pre>
+cd work.folder
 wget ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_mouse/release_M11/gencode.vM11.annotation.gtf.gz
 </pre>
-
-**Don't forget to place the GENCODE gtf file into the working folder!**
 
 **Install featureCounts**
 
@@ -182,3 +180,5 @@ chmod 755 rnaSeqFPro.PE.hg19.sh
 </pre>
 
 **If you are re-running the pipe and you have already previously ran the pipe, delete the GSEPD_OUTPUT folder as the RGSEPD needs to create this folder itself, it will stop if it enconters this folder already created** 
+
+**Don't forget to place the GENCODE gtf file into the working folder!**
