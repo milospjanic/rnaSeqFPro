@@ -132,7 +132,7 @@ biocLite("goseq")
 wget https://github.com/pachterlab/kallisto/releases/download/v0.43.0/kallisto_linux-v0.43.0.tar.gz
 </pre>
 
-Creating a meta data table (i.e. a file named meta.data) is necessary for RGSEPD to perform analysis using DESeq2/goseq. Table 1 shows an example of a meta data sheet for SE reads. **Note that sample names must be shown without .fastq.gz extension.**
+Providing a meta information placed in a file named meta.data is necessary for RGSEPD to perform analysis using DESeq2/goseq. Table 1 shows an example of a meta data sheet for SE reads. **Note that sample names must be shown without .fastq.gz extension.**
 
 <pre>
 Sample  Condition       SHORTNAME
