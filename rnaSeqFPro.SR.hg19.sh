@@ -228,6 +228,54 @@ chmod 775 script.R
 ./script.R
 rm script.R
 
+#create R script for DESeq
+
+touch script.deseq.R
+
+echo "#!/usr/bin/Rscript" > script.deseq.R
+echo "library(DESeq)" >> script.deseq.R
+echo "data<-read.delim(\"mastertable.genename\", header=T, row.names = 1, check.names=F)" >>script.deseq.R
+echo "meta<-read.delim(\"meta.data\", header=T)" >>script.deseq.R
+###
+echo "conds<-factor(meta\$Condition)
+sampleTable<-data.frame(sampleName=colnames(data), condition=conds)
+countsTable = data
+#rownames(countsTable) <- countsTable$Geneid
+#countsTable <- countsTable[,-1]
+cds <- newCountDataSet( countsTable, conds)
+cds <- estimateSizeFactors( cds )
+sizeFactors( cds )
+head(counts(cds))
+head(counts(cds,normalized=TRUE))
+cds = estimateDispersions( cds, method=\"blind\", sharingMode=\"fit-only\" )
+str( fitInfo(cds) )
+plotDispEsts( cds )
+
+res = nbinomTest( cds, \"A\", \"B\" )
+head(res)
+plotMA(res)
+hist(res\$pval, breaks=100, col=\"skyblue\", border=\"slateblue\", main=\"\")
+resSig = res[ res\$padj < 0.1, ]
+write.csv( res, file=\"Result_Table.csv\" )
+write.csv( resSig[ order( resSig\$foldChange, -resSig\$baseMean ), ] , file=\"DownReg_Result_Table.csv\" )
+write.csv( resSig[ order( -resSig\$foldChange, -resSig\$baseMean ), ], file=\"UpReg_Result_Table.csv\" )
+
+cdsBlind = estimateDispersions( cds, method=\"blind\" )
+vsd = varianceStabilizingTransformation( cdsBlind )
+library(\"RColorBrewer\")
+library(\"gplots\")
+select = order(rowMeans(counts(cds)), decreasing=TRUE)[1:250]
+hmcol = colorRampPalette(brewer.pal(9, \"GnBu\"))(100)
+heatmap.2(exprs(vsd)[select,], col = hmcol, trace=\"none\", margin=c(10, 6))
+print(plotPCA(vsd, intgroup=c(\"condition\")))
+
+" >> script.deseq.R
+
+chmod 775 script.deseq.R
+./script.deseq.R
+rm script.deseq.R
+
+
 duration=$SECONDS
 echo "$(($duration / 60)) minutes and $(($duration % 60)) seconds elapsed."
 
