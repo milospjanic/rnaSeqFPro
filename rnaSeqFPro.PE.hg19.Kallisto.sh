@@ -13,16 +13,23 @@ mkdir FastQC_OUTPUT
 mv *zip FastQC_OUTPUT
 mv *html FastQC_OUTPUT
 
-###mapping with STAR - requires STAR installed and copied to PATH
+###mapping with Kallisto - requires Kallisto installed and copied to PATH
 
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
     mkdir "${files[i]}.${files[i+1]}.STAR"    
 done 
 
+#create kallisto index
+
+
+
+#pseudo-mapping with kallisto
+
 GenomeDir='~/reference_genomes/hg19/'
 GenomeFasta='~/reference_genomes/hg19/hg19.fa'
-CommonPars='--runThreadN 64 --outSAMattributes All --genomeLoad NoSharedMemory'
+Gencode='quant -i GENCODE_transcripts'
+Parameters=' -l 180 -s 18'
 
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
@@ -37,26 +44,10 @@ echo $Reads
 
     # enter the correct folder
 	cd ${files[i]}.${files[i+1]}.STAR
-    # run 1st pass
-        mkdir Pass1
-        cd Pass1
-        STAR $CommonPars --genomeDir $GenomeDir --readFilesIn $Reads
+    # run Kallisto
+        kallisto $Gencode -o ${files[i]}.${files[i+1]}.output $Parameters $Reads
         cd ..
-    # make splice junctions database file out of SJ.out.tab, filter out non-canonical junctions
-        mkdir GenomeForPass2
-        cd GenomeForPass2
-        awk 'BEGIN {OFS="\t"; strChar[0]="."; strChar[1]="+"; strChar[2]="-";} {if(\$5>0){print \$1,\$2,\$3,strChar[\$4]}}' ../Pass1/SJ.out.tab > SJ.out.tab.Pass1.sjdb
-    # generate genome with junctions from the 1st pass
-        STAR --genomeDir ./ --runMode genomeGenerate --genomeFastaFiles $GenomeFasta --sjdbFileChrStartEnd SJ.out.tab.Pass1.sjdb --sjdbOverhang 100 --runThreadN 64
-        cd ..
-    # run 2nd pass with the new genome
-        mkdir Pass2
-        cd Pass2
-        STAR $CommonPars --genomeDir ../GenomeForPass2 --readFilesIn $Reads
-        echo FINISHED ${pwd}/${files[i]} ${pwd}/${files[i+1]} 
-        cd ..
-        cd ..
-        
+        echo FINISHED ${pwd}/${files[i]} ${pwd}/${files[i+1]}  
 EOL
   done
 
