@@ -20,9 +20,7 @@ for (( i=0; i<${#files[@]} ; i+=2 )) ; do
     mkdir "${files[i]}.${files[i+1]}.STAR"    
 done 
 
-#create kallisto index
-
-
+#create kallisto index before running: kallisto index -i gencode.v25lift37.annotation.gtf
 
 #pseudo-mapping with kallisto
 
