@@ -265,9 +265,17 @@ cdsBlind = estimateDispersions( cds, method=\"blind\" )
 vsd = varianceStabilizingTransformation( cdsBlind )
 library(\"RColorBrewer\")
 library(\"gplots\")
+
 select = order(rowMeans(counts(cds)), decreasing=TRUE)[1:250]
 hmcol = colorRampPalette(brewer.pal(9, \"GnBu\"))(100)
 heatmap.2(exprs(vsd)[select,], col = hmcol, trace=\"none\", margin=c(10, 6))
+
+select = order(rowMeans(counts(cds)), decreasing=TRUE)[1:500]
+heatmap.2(exprs(vsd)[select,], col = hmcol, trace=\"none\", margin=c(10, 6))
+
+select = order(rowMeans(counts(cds)), decreasing=TRUE)[1:1000]
+heatmap.2(exprs(vsd)[select,], col = hmcol, trace=\"none\", margin=c(10, 6))
+
 print(plotPCA(vsd, intgroup=c(\"condition\")))
 
 " >> script.deseq.R
