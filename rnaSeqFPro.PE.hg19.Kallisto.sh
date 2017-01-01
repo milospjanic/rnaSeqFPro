@@ -17,10 +17,10 @@ mv *html FastQC_OUTPUT
 
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    mkdir "${files[i]}.${files[i+1]}.STAR"    
+    mkdir "${files[i]}.${files[i+1]}.Kallisto"    
 done 
 
-#create kallisto index before running: kallisto index -i gencode.v25lift37.annotation.gtf
+#create kallisto index before running: kallisto index -i GENCODE_transcripts gencode.v25lift37.annotation.gtf
 
 #pseudo-mapping with kallisto
 
@@ -33,7 +33,7 @@ files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
 
 echo $(pwd)/${files[i]} $(pwd)/${files[i+1]}
-Reads="$(pwd)/"${files[i]}" $(pwd)/"${files[i+1]}" --readFilesCommand zcat"
+Reads="$(pwd)/"${files[i]}" $(pwd)/"${files[i+1]}" "
 echo $Reads
 
   cat >> commands.2.${files[i]}.${files[i+1]}.tmp <<EOL
@@ -41,7 +41,7 @@ echo $Reads
     echo Proccessing `pwd`: ${files[i]} ${files[i+1]}
 
     # enter the correct folder
-	cd ${files[i]}.${files[i+1]}.STAR
+	cd ${files[i]}.${files[i+1]}.Kallisto
     # run Kallisto
         kallisto $Gencode -o ${files[i]}.${files[i+1]}.output $Parameters $Reads
         cd ..
@@ -49,63 +49,21 @@ echo $Reads
 EOL
   done
 
-files=(*fastq.gz)
-for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    sed -i "8i\\\tcd ${files[i]}.${files[i+1]}.STAR" commands.2.${files[i]}.${files[i+1]}.tmp
-done
 
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    sed -i "2i\ Reads=\"`pwd`/${files[i]} `pwd`/${files[i+1]} --readFilesCommand zcat\"" commands.2.${files[i]}.${files[i+1]}.tmp
+    sed -i "2i\ Reads=\"`pwd`/${files[i]} `pwd`/${files[i+1]} \"" commands.2.${files[i]}.${files[i+1]}.tmp
 done
 
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
     source commands.2.${files[i]}.${files[i+1]}.tmp
 done
 
-#subscrips
+# Find all files with abundance.tsv extension and cut the first and $2 column, save it as .cut file
 
-files=(*fastq.gz)
-for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    echo "${files[i]}" "${files[i+1]}" >> commands.2
-done
-
-touch sam.tmp
-
-files=(*fastq.gz)
-for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    echo "${files[i]}.${files[i+1]}.sam" >> sam.tmp     
-done
-
-awk 'FNR==NR{a[FNR]=$0;next}{ print $0,">",a[FNR]}' sam.tmp commands.2 > merge.tmp
-
-rm sam.tmp
-rm commands.2
-rm merge.tmp
-
-
-###counting with featureCounts
-
-#naming the output files by the second to last subfolder in path
-
-find . -type f -wholename "*Pass2*sam" -exec sh -c '
-    for f
-        do echo $f
-        fileName=$(basename $f);
-        filePath=$(dirname $f);
-        lastDir=$(basename $filePath);
-        prevDir=$(basename $(dirname $filePath));
-        echo $prevDir
-        echo $lastDir
-        echo proccessing  $fileName from $(pwd)/$lastDir into $prevDir.counts.txt;
-        featureCounts -a gencode.v25lift37.annotation.gtf -o $prevDir.counts.txt -T 64 -t exon -g gene_id $f
-    done' sh {} +
-    
-# Find all files with .counts.txt extension and cut the first and $2 column, save it as .cut file
-
-find -name '*.counts.txt' | xargs -I % sh -c 'cut -f 1,7 %  > %.cut1;'
+find -name '*abundance.tsv' | xargs -I % sh -c 'cut -f1,4 % | sed "s/|.*|.*|.*|.*|.*|//g" > %.cut1;'
 
 # remove header
-find -name '*.counts.txt.cut1' | xargs -I % sh -c 'tail -n+2 % > %.cut2;'
+find -name '*abundance.tsv.cut1' | xargs -I % sh -c 'tail -n+2 % > %.cut2;'
 
 # download fileMulti2TableMod1.awk
 
@@ -113,7 +71,7 @@ wget https://raw.githubusercontent.com/milospjanic/fileMulti2TableMod1/master/fi
 
 # Find .file.cut files and call fileMulti2TableMod1.awk script to create master table
 
-filescut=$(ls *.counts.txt.cut1.cut2) 
+filescut=$(ls *.cut1.cut2) 
 awk -f fileMulti2TableMod1.awk $(echo $filescut)> mastertable
 
 #clean up mastertable
