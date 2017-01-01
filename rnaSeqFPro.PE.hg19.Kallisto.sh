@@ -29,7 +29,7 @@ kallisto index -i kallisto_index $files
 GenomeDir='~/reference_genomes/hg19/'
 GenomeFasta='~/reference_genomes/hg19/hg19.fa'
 Index='-i kallisto_index'
-Parameters='--single -l 200 -s 20'
+Parameters='-l 200 -s 20'
 
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
