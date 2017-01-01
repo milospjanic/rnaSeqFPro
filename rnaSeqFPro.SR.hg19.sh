@@ -75,23 +75,23 @@ done
 
 #subscrips
 
-#files=(*fastq.gz)
-#for (( i=0; i<${#files[@]} ; i+=1 )) ; do
-    #echo "${files[i]}" >> commands.2
-#done
+files=(*fastq.gz)
+for (( i=0; i<${#files[@]} ; i+=1 )) ; do
+    echo "${files[i]}" >> commands.2
+done
 
-#touch sam.tmp
+touch sam.tmp
 
-#files=(*fastq.gz)
-#for (( i=0; i<${#files[@]} ; i+=1 )) ; do
-    #echo "${files[i]}.sam" >> sam.tmp     
-#done
+files=(*fastq.gz)
+for (( i=0; i<${#files[@]} ; i+=1 )) ; do
+    echo "${files[i]}.sam" >> sam.tmp     
+done
 
-#awk 'FNR==NR{a[FNR]=$0;next}{ print $0,">",a[FNR]}' sam.tmp commands.2 > merge.tmp
+awk 'FNR==NR{a[FNR]=$0;next}{ print $0,">",a[FNR]}' sam.tmp commands.2 > merge.tmp
 
-#rm sam.tmp
-#rm commands.2
-#rm merge.tmp
+rm sam.tmp
+rm commands.2
+rm merge.tmp
 
 
 ###counting with featureCounts
