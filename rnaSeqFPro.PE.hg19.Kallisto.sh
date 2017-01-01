@@ -17,16 +17,18 @@ mv *html FastQC_OUTPUT
 
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
-    mkdir "${files[i]}.${files[i+1]}.Kallisto"    
+    mkdir "${files[i]}.${files[i+1]}.kallisto"    
 done 
 
-#create kallisto index before running: kallisto index -i GENCODE_transcripts gencode.v25lift37.annotation.gtf
+#create kallisto index for each sample
+files=$(ls *fastq.gz)
+kallisto index -i kallisto_index $files
 
 #pseudo-mapping with kallisto
 
 GenomeDir='~/reference_genomes/hg19/'
 GenomeFasta='~/reference_genomes/hg19/hg19.fa'
-Gencode='quant -i GENCODE_transcripts'
+Index='-i kallisto_index'
 Parameters='--single -l 200 -s 20'
 
 files=(*fastq.gz)
@@ -41,9 +43,9 @@ echo $Reads
     echo Proccessing `pwd`: ${files[i]} ${files[i+1]}
 
     # enter the correct folder
-	cd ${files[i]}.${files[i+1]}.Kallisto
+	cd ${files[i]}.${files[i+1]}.kallisto
     # run Kallisto
-        kallisto $Gencode -o ${files[i]}.${files[i+1]}.output $Parameters $Reads
+        kallisto quant $Index -o ${files[i]}.${files[i+1]}.output $Parameters $Reads
         cd ..
         echo FINISHED ${pwd}/${files[i]} ${pwd}/${files[i+1]}  
 EOL
