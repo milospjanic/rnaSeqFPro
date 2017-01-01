@@ -126,10 +126,11 @@ source("https://bioconductor.org/biocLite.R")
 biocLite("goseq")
 </pre>
 
-**Download Kallisto binary.**
+**Download Kallisto binary. Index the GENCODE transcripts**
 
 <pre>
 wget https://github.com/pachterlab/kallisto/releases/download/v0.43.0/kallisto_linux-v0.43.0.tar.gz
+kallisto index -i GENCODE_transcripts gencode.v25lift37.annotation.gtf
 </pre>
 
 **Meta data**
