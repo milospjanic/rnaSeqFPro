@@ -42,7 +42,7 @@ echo $Reads
 
   cat >> commands.2.${files[i]}.${files[i+1]}.tmp <<EOL
 #!/bin/bash
-    Index='-i GENCODE_transcripts_human'
+    Index='-i GENCODE_transcripts_mouse'
     Parameters='-l 200 -s 20'
     echo Proccessing `pwd`: ${files[i]} ${files[i+1]}
     
