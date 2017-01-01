@@ -21,7 +21,7 @@ for (( i=0; i<${#files[@]} ; i+=1 )) ; do
 done 
 
 #check if Kallisto index is present, if not create one
-FILE=GENCODE_transcripts_human 
+FILE=GENCODE_transcripts_mouse 
 
 if [ ! -f $FILE ]
 then
