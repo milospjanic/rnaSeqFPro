@@ -131,6 +131,8 @@ biocLite("goseq")
 <pre>
 wget https://github.com/pachterlab/kallisto/releases/download/v0.43.0/kallisto_linux-v0.43.0.tar.gz
 kallisto index -i GENCODE_transcripts gencode.v25lift37.annotation.gtf
+or
+kallisto index -i GENCODE_transcripts gencode.vM11.annotation.gtf
 </pre>
 
 **Meta data**
