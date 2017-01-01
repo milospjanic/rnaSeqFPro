@@ -20,6 +20,14 @@ for (( i=0; i<${#files[@]} ; i+=2 )) ; do
     mkdir "${files[i]}.${files[i+1]}.kallisto"    
 done 
 
+#check if Kallisto index is present, if not create one
+FILE=GENCODE_transcripts_human 
+
+if [ ! -f $FILE ]
+then
+kallisto index -i GENCODE_transcripts_human gencode.v25lift37.transcripts.fa.gz
+fi
+
 #in a for loop creating kallisto index for each sample and pseudo-mapping with kallisto
 
 GenomeDir='~/reference_genomes/hg19/'
@@ -34,12 +42,10 @@ echo $Reads
 
   cat >> commands.2.${files[i]}.${files[i+1]}.tmp <<EOL
 #!/bin/bash
-    Index='-i kallisto_index_${files[i]}.${files[i+1]}'
+    Index='-i GENCODE_transcripts_human'
     Parameters='-l 200 -s 20'
     echo Proccessing `pwd`: ${files[i]} ${files[i+1]}
     
-    # create kallisto index
-	kallisto index $Index $Reads
     # enter the correct folder
 	cd ${files[i]}.${files[i+1]}.kallisto
     # run Kallisto
