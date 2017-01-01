@@ -42,7 +42,7 @@ chmod 755 STAR
 cp STAR /usr/local/bin
 </pre>
 
-**Reference genome**
+**Reference genome.**
 
 Download the reference genome, in this example it is human hg19:
 
@@ -70,7 +70,7 @@ wget --timestamping
 ./twoBitToFa mm10.2bit mm10.fa
 </pre>
 
-**Indexing the reference genome**
+**Indexing the reference genome.**
 
 Use STAR to index the reference genome, use number of core on your machine, e.g. 64.
 <pre>
@@ -78,7 +78,7 @@ cd ~/reference_genomes
 STAR  --runMode genomeGenerate --runThreadN 64 --genomeDir ./ --genomeFastaFiles hg19.fa
 </pre>
 
-**Download GENCODE transcript annotation to the working folder**
+**Download GENCODE transcript annotation to the working folder.**
 
 For example for human hg19 genome:
 <pre>
@@ -92,7 +92,7 @@ cd work.folder
 wget ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_mouse/release_M11/gencode.vM11.annotation.gtf.gz
 </pre>
 
-**Install featureCounts**
+**Install featureCounts.**
 
 Install featureCounts. Downoad Subread binary from Sourceforge.
 <pre>
@@ -119,20 +119,17 @@ source("https://bioconductor.org/biocLite.R")
 biocLite("DESeq2")
 </pre>
 
-**In R install goseq**
+**In R install goseq.**
 
 <pre>
 source("https://bioconductor.org/biocLite.R")
 biocLite("goseq")
 </pre>
 
-**Download Kallisto binary. Index the GENCODE transcripts**
+**Download Kallisto binary.**
 
 <pre>
 wget https://github.com/pachterlab/kallisto/releases/download/v0.43.0/kallisto_linux-v0.43.0.tar.gz
-kallisto index -i GENCODE_transcripts gencode.v25lift37.annotation.gtf
-or
-kallisto index -i GENCODE_transcripts gencode.vM11.annotation.gtf
 </pre>
 
 **Meta data**
