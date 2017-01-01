@@ -24,8 +24,8 @@ done
 
 #pseudo-mapping with kallisto
 
-GenomeDir='~/reference_genomes/hg19/'
-GenomeFasta='~/reference_genomes/hg19/hg19.fa'
+GenomeDir='~/reference_genomes/mm10/'
+GenomeFasta='~/reference_genomes/mm10/mm10.fa'
 Gencode='quant -i GENCODE_transcripts'
 Parameters='--single -l 200 -s 20'
 
