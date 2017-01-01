@@ -16,46 +16,52 @@ mv *html FastQC_OUTPUT
 ###mapping with Kallisto - requires Kallisto installed and copied to PATH
 
 files=(*fastq.gz)
-for (( i=0; i<${#files[@]} ; i+=1 )) ; do
-    mkdir "${files[i]}.Kallisto"    
+for (( i=0; i<${#files[@]} ; i+=2 )) ; do
+    mkdir "${files[i]}.${files[i+1]}.kallisto"    
 done 
 
-#create kallisto index before running: kallisto index -i GENCODE_transcripts gencode.v25lift37.annotation.gtf
+#check if Kallisto index is present, if not create one
+FILE=GENCODE_transcripts_human 
 
-#pseudo-mapping with kallisto
+if [ ! -f $FILE ]
+then
+kallisto index -i GENCODE_transcripts_human gencode.v25lift37.transcripts.fa.gz
+fi
+
+#in a for loop creating kallisto index for each sample and pseudo-mapping with kallisto
 
 GenomeDir='~/reference_genomes/hg19/'
 GenomeFasta='~/reference_genomes/hg19/hg19.fa'
-Gencode='quant -i GENCODE_transcripts'
-Parameters='--single -l 200 -s 20'
 
 files=(*fastq.gz)
-for (( i=0; i<${#files[@]} ; i+=1 )) ; do
+for (( i=0; i<${#files[@]} ; i+=2 )) ; do
 
-echo $(pwd)/${files[i]}
-Reads="$(pwd)/"${files[i]}"
+echo $(pwd)/${files[i]} $(pwd)/${files[i+1]}
+Reads="$(pwd)/"${files[i]}" $(pwd)/"${files[i+1]}" "
 echo $Reads
 
-  cat >> commands.2.${files[i]}.tmp <<EOL
+  cat >> commands.2.${files[i]}.${files[i+1]}.tmp <<EOL
 #!/bin/bash
-    echo Proccessing `pwd`: ${files[i]}
-
+    Index='-i GENCODE_transcripts_human'
+    Parameters='-l 200 -s 20'
+    echo Proccessing `pwd`: ${files[i]} ${files[i+1]}
+    
     # enter the correct folder
-	cd ${files[i]}.Kallisto
+	cd ${files[i]}.${files[i+1]}.kallisto
     # run Kallisto
-        kallisto $Gencode -o ${files[i]}.output $Parameters $Reads
+        kallisto quant $Index -o ${files[i]}.${files[i+1]}.output $Parameters $Reads
         cd ..
-        echo FINISHED ${pwd}/${files[i]}
+        echo FINISHED ${pwd}/${files[i]} ${pwd}/${files[i+1]}  
 EOL
   done
 
 
-for (( i=0; i<${#files[@]} ; i+=1 )) ; do
-    sed -i "2i\ Reads=\"`pwd`/${files[i]} \"" commands.2.${files[i]}.tmp
+for (( i=0; i<${#files[@]} ; i+=2 )) ; do
+    sed -i "2i\ Reads=\"`pwd`/${files[i]} `pwd`/${files[i+1]} \"" commands.2.${files[i]}.${files[i+1]}.tmp
 done
 
-for (( i=0; i<${#files[@]} ; i+=1 )) ; do
-    source commands.2.${files[i]}.tmp
+for (( i=0; i<${#files[@]} ; i+=2 )) ; do
+    source commands.2.${files[i]}.${files[i+1]}.tmp
 done
 
 # Find all files with abundance.tsv extension and cut the first and $2 column, save it as .cut file
