@@ -78,18 +78,20 @@ cd ~/reference_genomes
 STAR  --runMode genomeGenerate --runThreadN 64 --genomeDir ./ --genomeFastaFiles hg19.fa
 </pre>
 
-**Download GENCODE transcript annotation to the working folder**
+**Download GENCODE transcript annotation and GENCODE fasta files to the working folder**
 
 For example for human hg19 genome:
 <pre>
 cd work.folder
 wget ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_human/release_25/GRCh37_mapping/gencode.v25lift37.annotation.gtf.gz
+wget ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_human/release_25/GRCh37_mapping/gencode.v25lift37.transcripts.fa.gz
 </pre>
 
 For mouse mm10 genome:
 <pre>
 cd work.folder
 wget ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_mouse/release_M11/gencode.vM11.annotation.gtf.gz
+wget ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_mouse/release_M11/gencode.vM11.transcripts.fa.gz
 </pre>
 
 **Install featureCounts**
