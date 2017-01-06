@@ -37,9 +37,11 @@ files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
 
 echo $(pwd)/${files[i]} $(pwd)/${files[i+1]}
+
 Reads="$(pwd)/"${files[i]}" $(pwd)/"${files[i+1]}" "
 Index='-i GENCODE_transcripts_human'
 Parameters='-l 200 -s 20'
+
 echo $Reads
 
   cat >> commands.2.${files[i]}.${files[i+1]}.tmp <<EOL
