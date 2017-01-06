@@ -37,13 +37,16 @@ files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
 
 echo $(pwd)/${files[i]} $(pwd)/${files[i+1]}
+
 Reads="$(pwd)/"${files[i]}" $(pwd)/"${files[i+1]}" "
+Index='-i GENCODE_transcripts_mouse'
+Parameters='-l 200 -s 20'
+    
 echo $Reads
 
   cat >> commands.2.${files[i]}.${files[i+1]}.tmp <<EOL
 #!/bin/bash
-    Index='-i GENCODE_transcripts_mouse'
-    Parameters='-l 200 -s 20'
+    
     echo Proccessing `pwd`: ${files[i]} ${files[i+1]}
     
     # enter the correct folder
