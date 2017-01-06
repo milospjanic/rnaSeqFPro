@@ -39,7 +39,7 @@ for (( i=0; i<${#files[@]} ; i+=2 )) ; do
 echo $(pwd)/${files[i]} $(pwd)/${files[i+1]}
 
 Reads="$(pwd)/"${files[i]}" $(pwd)/"${files[i+1]}" "
-Index='-i GENCODE_transcripts_mouse'
+Index='-i $(pwd)/GENCODE_transcripts_mouse'
 Parameters='-l 200 -s 20'
     
 echo $Reads
