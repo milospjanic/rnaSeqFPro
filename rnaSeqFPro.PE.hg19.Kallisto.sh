@@ -90,7 +90,7 @@ mv mastertable.2 mastertable
 
 # add header to mastertable
 
-find -name *.cut1.cut2 | sed 's/.fastq.gz.output.abundance.tsv.cut1.cut2//g' | sed -e 's/.*.fastq.gz.kallisto.//g' | tr '\n' ' ' > header
+find -name *.cut1.cut2 | sort | sed 's/.fastq.gz.output.abundance.tsv.cut1.cut2//g' | sed -e 's/.*.fastq.gz.kallisto.//g' | tr '\n' ' ' > header
 awk '{$1=" "$1}1' header > header2
 cat header2 mastertable > mastertable.2
 
