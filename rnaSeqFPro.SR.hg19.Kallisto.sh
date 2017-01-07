@@ -39,8 +39,9 @@ for (( i=0; i<${#files[@]} ; i+=1 )) ; do
 echo $(pwd)/${files[i]}
 
 Reads="$(pwd)/"${files[i]}" "
-Index='-i $(pwd)/GENCODE_transcripts_human'
+Index="-i $(pwd)/GENCODE_transcripts_human"
 Parameters='--single -l 200 -s 20'
+WorkDir="$(pwd)"
 
 echo $Reads
 
@@ -54,7 +55,7 @@ echo $Reads
     # run Kallisto
         kallisto quant $Index -o ${files[i]}.output $Parameters $Reads
         cd ..
-        echo FINISHED ${pwd}/${files[i]} 
+        echo FINISHED $WorkDir/${files[i]} 
 EOL
   done
 
