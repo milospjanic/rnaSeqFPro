@@ -81,7 +81,7 @@ wget https://raw.githubusercontent.com/milospjanic/fileMulti2TableMod1/master/fi
 
 # Find .file.cut files and call fileMulti2TableMod1.awk script to create master table
 
-filescut=$(find -name *.cut1.cut2 | tr '\n' ' ')  
+filescut=$(find -name *.cut1.cut2 | sort | tr '\n' ' ')  
 awk -f fileMulti2TableMod1.awk $(echo $filescut)> mastertable
 
 #clean up mastertable
