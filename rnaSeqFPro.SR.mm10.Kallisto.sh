@@ -13,7 +13,7 @@ mkdir FastQC_OUTPUT
 mv *zip FastQC_OUTPUT
 mv *html FastQC_OUTPUT
 
-###mapping with Kallisto - requires Kallisto installed and copied to PATH
+###pseudomapping with Kallisto - requires Kallisto installed and copied to PATH
 
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=1 )) ; do
@@ -28,7 +28,7 @@ then
 kallisto index -i GENCODE_transcripts_mouse gencode.vM11.transcripts.fa.gz
 fi
 
-#in a for loop creating kallisto index for each sample and pseudo-mapping with kallisto
+#pseudo-mapping with kallisto
 
 GenomeDir='~/reference_genomes/mm10/'
 GenomeFasta='~/reference_genomes/mm10/mm10.fa'
@@ -81,7 +81,7 @@ wget https://raw.githubusercontent.com/milospjanic/fileMulti2TableMod1/master/fi
 
 # Find .file.cut files and call fileMulti2TableMod1.awk script to create master table
 
-filescut=$(ls *.cut1.cut2) 
+filescut=$(find -name *.cut1.cut2 | sort | tr '\n' ' ')  
 awk -f fileMulti2TableMod1.awk $(echo $filescut)> mastertable
 
 #clean up mastertable
@@ -90,16 +90,15 @@ mv mastertable.2 mastertable
 
 # add header to mastertable
 
-files=$(ls *.counts.txt.cut1.cut2) 
-echo ${files} | sed 's/.counts.txt.cut1.cut2//g' > header
+find -name *.cut1.cut2 | sort | sed 's/.fastq.gz.output.abundance.tsv.cut1.cut2//g' | sed -e 's/.*.fastq.gz.kallisto.//g' | tr '\n' ' ' > header
 awk '{$1=" "$1}1' header > header2
 cat header2 mastertable > mastertable.2
 
 mv mastertable.2 mastertable
 
 # remove .cut files
-rm *.counts.txt.cut1
-rm *.counts.txt.cut1.cut2
+find -name *.cut1 | xargs rm
+find -name *.cut1.cut2 | xargs rm
 
 # remove fileMulti2TableMod1.awk
 rm fileMulti2TableMod1.awk
