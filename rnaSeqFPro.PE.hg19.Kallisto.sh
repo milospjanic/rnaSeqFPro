@@ -28,7 +28,7 @@ then
 kallisto index -i GENCODE_transcripts_human gencode.v25lift37.transcripts.fa.gz
 fi
 
-#in a for loop creating kallisto index for each sample and pseudo-mapping with kallisto
+#pseudo-mapping with kallisto
 
 GenomeDir='~/reference_genomes/hg19/'
 GenomeFasta='~/reference_genomes/hg19/hg19.fa'
