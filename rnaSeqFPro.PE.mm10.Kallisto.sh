@@ -28,7 +28,7 @@ then
 kallisto index -i GENCODE_transcripts_mouse gencode.vM11.transcripts.fa.gz
 fi
 
-#in a for loop creating kallisto index for each sample and pseudo-mapping with kallisto
+#pseudo-mapping with kallisto
 
 GenomeDir='~/reference_genomes/mm10/'
 GenomeFasta='~/reference_genomes/mm10/mm10.fa'
