@@ -13,7 +13,7 @@ mkdir FastQC_OUTPUT
 mv *zip FastQC_OUTPUT
 mv *html FastQC_OUTPUT
 
-###mapping with Kallisto - requires Kallisto installed and copied to PATH
+###pseudomapping with Kallisto - requires Kallisto installed and copied to PATH
 
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
