@@ -91,7 +91,9 @@ awk -f fileMulti2TableMod1.awk $(echo $filescut)> mastertable
 
 #clean up mastertable
 sed -e 's/\.[0-9]*//g' mastertable | sed 's/_[0-9]*//g' > mastertable.2
-mv mastertable.2 mastertable
+sed -e 's/\t[0-9]*e-[0-9]*/\t0/g' mastertable.2 > mastertable.3
+mv mastertable.3 mastertable
+rm mastertable.2
 
 # add header to mastertable
 
