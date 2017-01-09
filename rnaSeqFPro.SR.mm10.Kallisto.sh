@@ -121,7 +121,7 @@ echo "#!/usr/bin/Rscript
 library(biomaRt)
 listMarts(host=\"grch37.ensembl.org\")
 
-ensembl = useMart(\"ENSEMBL_MART_ENSEMBL\",dataset=\"hsapiens_gene_ensembl\", host=\"grch37.ensembl.org\")
+ensembl = useMart(\"ENSEMBL_MART_ENSEMBL\",dataset=\"mmusculus_gene_ensembl\", host=\"grch37.ensembl.org\")
 
 id_merge_mrna = getBM(attributes=c(\"ensembl_gene_id\",\"refseq_mrna\"),mart=ensembl)
 write.table(id_merge_mrna, file=\"id_merge.mrna.txt\", sep = \"\t\", quote =F, col.names=F, row.names=F)
