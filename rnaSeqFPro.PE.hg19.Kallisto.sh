@@ -90,8 +90,8 @@ filescut=$(find -name *.cut1.cut2.cleaned | sort | tr '\n' ' ')
 awk -f fileMulti2TableMod1.awk $(echo $filescut)> mastertable
 
 #clean up mastertable
-sed -e 's/\.[0-9]*//g' mastertable | sed 's/_[0-9]*//g' > mastertable.2
-sed -e 's/\t[0-9]*e-[0-9]*/\t0/g' mastertable.2 > mastertable.3
+sed -e 's/\.[0-9]*//g' mastertable | sed 's/_[0-9]*//g' > mastertable.2 #remove decimal points, roundup
+sed -e 's/\t[0-9]*e-[0-9]*/\t0/g' mastertable.2 > mastertable.3 #substitute e-N numbers to 0
 mv mastertable.3 mastertable
 rm mastertable.2
 
