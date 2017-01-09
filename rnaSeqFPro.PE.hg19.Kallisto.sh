@@ -151,6 +151,12 @@ awk 'NR==FNR {h[$1] = $1; h2[$1] = $2; next} {if (h2[$1]) print h2[$1], $0}' id_
 tabsep mastertable.genename
 cut -f1,3- mastertable.genename >mastertable.genename.2
 mv mastertable.genename.2 mastertable.genename
+
+#remove duplicated rows, in id_merge multiple ENSG can correspond to one NM id, thus creating 
+awk '\''!a[$1]++'\'' mastertable.genename > mastertable.genename.2
+mv mastertable.genename.2 mastertable.genename
+
+#append header
 head -n1 mastertable > header
 sed -i 's/.fastq.gz//g'  header
 sed -i 's/.STAR//g' header
