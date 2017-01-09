@@ -79,9 +79,14 @@ find -name '*abundance.tsv.cut1' | xargs -I % sh -c 'tail -n+2 % > %.cut2;'
 
 wget https://raw.githubusercontent.com/milospjanic/fileMulti2TableMod1/master/fileMulti2TableMod1.awk
 
+#select the top GENCODE isoform according to estimated read counts
+
+find -name '*abundance.tsv.cut1.cut2' | xargs -I % sh -c 'awk '\''{for(i=1;i<=NF;i++) t+=$i; print t"\t"$0; t=0}'\'' % | sort -k2,2 -k1,1nr | awk '\''!a[$2]++'\'' | cut -f2- > %.cleaned;'
+find -name '*abundance.tsv.cut1.cut2.cleaned' | xargs -I % sh -c 'tabsep %;'
+
 # Find .file.cut files and call fileMulti2TableMod1.awk script to create master table
 
-filescut=$(find -name *.cut1.cut2 | sort | tr '\n' ' ')  
+filescut=$(find -name *.cut1.cut2.cleaned | sort | tr '\n' ' ')  
 awk -f fileMulti2TableMod1.awk $(echo $filescut)> mastertable
 
 #clean up mastertable
