@@ -70,7 +70,7 @@ done
 
 # Find all files with abundance.tsv extension and cut the first and $2 column, save it as .cut file
 
-find -name '*abundance.tsv' | xargs -I % sh -c 'cut -f1,4 % | sed "s/.*|E/E/g" | sed "s/|.*|.*|.*|.*|//g" > %.cut1;'
+find -name '*abundance.tsv' | xargs -I % sh -c 'cut -f1,4 % | sed "s/^[^|]*|//g" | sed "s/|.*|.*|.*|.*|//g" > %.cut1;'
 
 # remove header
 find -name '*abundance.tsv.cut1' | xargs -I % sh -c 'tail -n+2 % > %.cut2;'
