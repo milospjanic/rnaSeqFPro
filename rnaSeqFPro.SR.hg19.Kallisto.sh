@@ -157,12 +157,6 @@ mv mastertable.genename.2 mastertable.genename
 rm header
 tabsep mastertable.genename
 
-#reassign GENCODE counted reads on RefSeq identifiers - solution to ambiguous isoform assignment error
-
-awk '{for(i=1;i<=NF;i++) t+=$i; print t"\t"$0; t=0}' mastertable.genename | sort -k2,2 -k1,1nr | awk '!a[$2]++' | cut -f2- > mastertable.genename.cleaned
-mv mastertable.genename.cleaned mastertable.genename
-tabsep mastertable.genename
-
 #remove temporary files
 
 rm id_merge.mrna.txt
