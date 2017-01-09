@@ -194,4 +194,6 @@ chmod 755 rnaSeqFPro.PE.hg19.sh
 
 **Don't forget to place the GENCODE gtf file, FastQC folder and meta.data into the working folder! These are the 3 only requirments neccesary to be in the working directory, in addition to the fastqc.gz files**
 
+**For Kallisto script versions you need to place GENCODE fasta.gz file in the working folder as well**
+
 **Dont forget that reference genome needs to be in your ~/reference_genomes folder, in case you switch to another user account script may not work because it searches for ~/reference_genomes folder.**
