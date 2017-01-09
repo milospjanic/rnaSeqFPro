@@ -153,7 +153,7 @@ cut -f1,3- mastertable.genename >mastertable.genename.2
 mv mastertable.genename.2 mastertable.genename
 
 #remove duplicated rows, in id_merge multiple ENSG can correspond to one NM id, thus creating 
-awk '\''!a[$1]++'\'' mastertable.genename > mastertable.genename.2
+sort mastertable.genename | awk '!a[$1]++' > mastertable.genename.2
 mv mastertable.genename.2 mastertable.genename
 
 #append header
