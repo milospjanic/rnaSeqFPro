@@ -92,8 +92,10 @@ awk -f fileMulti2TableMod1.awk $(echo $filescut)> mastertable
 #clean up mastertable
 sed -e 's/\.[0-9]*//g' mastertable | sed 's/_[0-9]*//g' > mastertable.2 #remove decimal points, roundup
 sed -e 's/\t[0-9]*e-[0-9]*/\t0/g' mastertable.2 > mastertable.3 #substitute e-N numbers to 0
-mv mastertable.3 mastertable
+awk  '/e[+-]/{for(i = 1; i <= NF; i++) {if ($i~/^[0-9]*e[+-][0-9]*$/) printf "%.0f""\t", $i; else printf $i"\t"} printf "\n";next} {printf $0"\n"}' mastertable.3 > mastertable.4
+mv mastertable.4 mastertable
 rm mastertable.2
+rm mastertable.3
 
 # add header to mastertable
 
