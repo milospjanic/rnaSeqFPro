@@ -192,7 +192,7 @@ chmod 755 rnaSeqFPro.PE.hg19.sh
 
 **If you are trying to re-run the pipe, e.g. you have already previously ran the pipe but for some reason it stopped, delete the GSEPD_OUTPUT folder as the RGSEPD needs to create this folder itself, it will stop if it encounters this folder already created** 
 
-**Don't forget to place the GENCODE gtf file, FastQC folder and meta.data into the working folder! These are the 3 only requirments neccesary to be in the working directory, in addition to the fastqc.gz files**
+**Don't forget to place the GENCODE gtf file, FastQC folder and meta.data into the working folder! These are the only 3 requirements neccesary to be in the working directory, in addition to the fastqc.gz files**
 
 **For Kallisto script versions, in addition, you need to place the GENCODE fasta (fa.gz) file in the working folder**
 
