@@ -30,8 +30,9 @@ fi
 
 #pseudo-mapping with kallisto
 
-GenomeDir='~/reference_genomes/mm10/'
-GenomeFasta='~/reference_genomes/mm10/mm10.fa'
+GenomeDir='~/reference_genomes/hg19/'
+GenomeFasta='~/reference_genomes/hg19/hg19.fa'
+
 
 files=(*fastq.gz)
 for (( i=0; i<${#files[@]} ; i+=2 )) ; do
