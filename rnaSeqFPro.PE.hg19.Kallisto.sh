@@ -21,11 +21,11 @@ for (( i=0; i<${#files[@]} ; i+=2 )) ; do
 done 
 
 #check if Kallisto index is present, if not create one
-FILE=GENCODE_transcripts_mouse 
+FILE=GENCODE_transcripts_human 
 
 if [ ! -f $FILE ]
 then
-kallisto index -i GENCODE_transcripts_mouse gencode.vM11.transcripts.fa.gz
+kallisto index -i GENCODE_transcripts_human gencode.v25lift37.transcripts.fa.gz
 fi
 
 #pseudo-mapping with kallisto
@@ -40,7 +40,7 @@ for (( i=0; i<${#files[@]} ; i+=2 )) ; do
 echo $(pwd)/${files[i]} $(pwd)/${files[i+1]}
 
 Reads="$(pwd)/"${files[i]}" $(pwd)/"${files[i+1]}" "
-Index="-i $(pwd)/GENCODE_transcripts_mouse"
+Index="-i $(pwd)/GENCODE_transcripts_human"
 Parameters='-l 200 -s 20'
 WorkDir="$(pwd)"
     
