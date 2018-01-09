@@ -175,6 +175,11 @@ rm id_merge.ncrna.txt
 #rm id_merge.txt
 rm script.r
 
+###cleaning
+
+grep -v Geneid mastertable.genename > mastertable.1
+mv mastertable.1 mastertable.genename
+tabsep mastertable.genename
 
 ###create  R script
 
