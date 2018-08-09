@@ -248,6 +248,18 @@ heatmap.2(exprs(vsd)[select,], col = hmcol, trace=\"none\", margin=c(10, 6))
 
 print(plotPCA(vsd, intgroup=c(\"condition\")))
 
+# Make a basic volcano plot
+with(res, plot(log2FoldChange, -log10(pval), pch=20, main=\"Volcano plot\", xlim=c(-5,5), ylim=c(0,20)))
+
+# Add colored points: red if padj<0.05, orange of log2FC>1, green if both
+with(subset(res, padj<.05 ), points(log2FoldChange, -log10(pval), pch=20, col=\"red\"))
+with(subset(res, abs(log2FoldChange)>1), points(log2FoldChange, -log10(pval), pch=20, col=\"orange\"))
+with(subset(res, padj<.05 & abs(log2FoldChange)>1), points(log2FoldChange, -log10(pval), pch=20, col=\"green\"))
+
+# Label points with the textxy function from the calibrate plot
+library(calibrate)
+with(subset(res, padj<.05 & abs(log2FoldChange)>1), textxy(log2FoldChange, -log10(pval), labs=id, cex=.8))
+
 " >> script.deseq.R
 
 chmod 775 script.deseq.R
