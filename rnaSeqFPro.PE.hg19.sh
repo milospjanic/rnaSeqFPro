@@ -284,7 +284,7 @@ heatmap.2(exprs(vsd)[select,], col = hmcol, trace=\"none\", margin=c(10, 6))
 print(plotPCA(vsd, intgroup=c(\"condition\")))
 
 # Make a basic volcano plot
-with(res, plot(log2FoldChange, -log10(pval), pch=20, main=\"Volcano plot\", xlim=c(-5,5), ylim=c(0,20)))
+with(res, plot(log2FoldChange, -log10(pval), pch=20, main="Volcano plot", xlim=c(min(res$log2FoldChange[is.finite(res$log2FoldChange)]),max(res$log2FoldChange[is.finite(res$log2FoldChange)])), ylim=c(0,max(-log10(res$pval)[is.finite(-log10(res$pval))]))))
 
 # Add colored points: red if padj<0.05, orange of log2FC>1, green if both
 with(subset(res, padj<.05 ), points(log2FoldChange, -log10(pval), pch=20, col=\"red\"))
